@@ -1,4 +1,6 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+import sbt.ForkOptions
+import sbt.Tests._
 
 val specs2V = "4.9.4"
 
@@ -14,7 +16,16 @@ lazy val `case-insensitive` = project.in(file("."))
 lazy val core = project.in(file("core"))
   .settings(commonSettings)
   .settings(
-    name := "case-insensitive"
+    name := "case-insensitive",
+    Test / testGrouping := {
+      val (turkish, english) = (Test / definedTests).value.partition(_.name.contains("Turkey"))
+      def group(language: String, tests: Seq[TestDefinition]) =
+        new Group(language, tests, SubProcess(ForkOptions().withRunJVMOptions(Vector(s"-Duser.language=${language}"))))
+      List(
+        group("en", english),
+        group("tr", turkish),
+      )
+    }
   )
 
 lazy val site = project.in(file("site"))
