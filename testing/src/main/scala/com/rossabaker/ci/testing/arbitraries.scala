@@ -1,4 +1,5 @@
 package com.rossabaker.ci
+package testing
 
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary

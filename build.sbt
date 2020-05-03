@@ -4,6 +4,7 @@ import sbt.Tests._
 
 val catsV = "2.1.0"
 val disciplineSpecs2V = "1.1.0"
+val scalacheckV = "1.14.2"
 val specs2V = "4.9.4"
 
 val kindProjectorV = "0.11.0"
@@ -13,7 +14,7 @@ val betterMonadicForV = "0.3.1"
 lazy val `case-insensitive` = project.in(file("."))
   .disablePlugins(MimaPlugin)
   .enablePlugins(NoPublishPlugin)
-  .aggregate(core)
+  .aggregate(core, testing, tests)
 
 lazy val core = project.in(file("core"))
   .settings(commonSettings)
@@ -21,8 +22,31 @@ lazy val core = project.in(file("core"))
     name := "case-insensitive",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core" % catsV,
-      "org.typelevel" %% "cats-laws" % catsV % Test,
     ),
+  )
+
+lazy val testing = project.in(file("testing"))
+  .settings(commonSettings)
+  .settings(
+    name := "case-insensitive-testing",
+    libraryDependencies ++= Seq(
+      "org.scalacheck" %% "scalacheck" % scalacheckV,
+    ),
+  )
+  .dependsOn(core)
+
+lazy val tests = project.in(file("tests"))
+  .disablePlugins(MimaPlugin)
+  .enablePlugins(NoPublishPlugin)
+  .settings(commonSettings)
+  .settings(
+    name := "case-insensitive-tests",
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-laws" % catsV,
+      "org.specs2" %% "specs2-core" % specs2V,
+      "org.specs2" %% "specs2-scalacheck" % specs2V,
+      "org.typelevel" %% "discipline-specs2" % disciplineSpecs2V,
+    ).map(_ % Test),
     Test / testGrouping := {
       val (turkish, english) = (Test / definedTests).value.partition(_.name.contains("Turkey"))
       def group(language: String, tests: Seq[TestDefinition]) =
@@ -33,6 +57,7 @@ lazy val core = project.in(file("core"))
       )
     }
   )
+  .dependsOn(testing)
 
 lazy val site = project.in(file("site"))
   .disablePlugins(MimaPlugin)
@@ -89,12 +114,6 @@ lazy val commonSettings = Seq(
 
   addCompilerPlugin("org.typelevel" %% "kind-projector" % kindProjectorV cross CrossVersion.full),
   addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % betterMonadicForV),
-
-  libraryDependencies ++= Seq(
-    "org.specs2"                  %% "specs2-core"                % specs2V           % Test,
-    "org.specs2"                  %% "specs2-scalacheck"          % specs2V           % Test,
-    "org.typelevel"               %% "discipline-specs2"          % disciplineSpecs2V % Test,
-  )
 )
 
 // General Settings

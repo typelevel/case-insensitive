@@ -2,7 +2,7 @@ package com.rossabaker.ci
 
 import cats.implicits._
 import cats.kernel.laws.discipline._
-import com.rossabaker.ci.arbitraries._
+import com.rossabaker.ci.testing.arbitraries._
 import org.specs2.mutable.Specification
 import org.scalacheck.Prop._
 import org.typelevel.discipline.specs2.mutable.Discipline
