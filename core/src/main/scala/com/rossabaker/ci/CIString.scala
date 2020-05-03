@@ -4,6 +4,20 @@ import cats.Show
 import cats.kernel.{Hash, LowerBounded, Monoid, Order, PartialOrder}
 import scala.math.Ordered
 
+/**
+  * A case-insensitive String.
+  *
+  * Two CI strings are equal if and only if they are the same length, and each
+  * corresponding character is equal after calling either `toUpper` or
+  * `toLower`.
+  *
+  * Ordering is based on a string comparison after folding each
+  * character to uppercase and then back to lowercase.
+  *
+  * All comparisons are insensitive to locales.
+  *
+  * @param toString The original value the CI String was constructed with.
+  */
 final class CIString private (override val toString: String) extends Ordered[CIString] {
   override def equals(that: Any): Boolean =
     that match {
