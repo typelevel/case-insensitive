@@ -75,7 +75,7 @@ lazy val site = project.in(file("site"))
   .enablePlugins(MdocPlugin)
   .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
-  .dependsOn(core)
+  .dependsOn(core, testing)
   .settings{
     import microsites._
     Seq(
@@ -86,7 +86,7 @@ lazy val site = project.in(file("site"))
       micrositeGithubRepo := "case-insensitive",
       micrositeBaseUrl := "/case-insensitive",
       micrositeDocumentationUrl := "https://www.javadoc.io/doc/com.rossabaker/case-insensitive_2.12",
-      micrositeGitterChannelUrl := "typelevel/libraries", // Feel Free to Set To Something Else
+      micrositeGitterChannel := false,
       micrositeFooterText := None,
       micrositeHighlightTheme := "atom-one-light",
       micrositePalette := Map(
