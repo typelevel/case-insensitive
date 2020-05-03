@@ -1,6 +1,7 @@
 package com.rossabaker.ci
 package bench
 
+import cats.Monoid
 import org.openjdk.jmh.annotations._
 
 class CIStringBench {
@@ -8,8 +9,23 @@ class CIStringBench {
 
   @Benchmark
   def hash: Int = ci.hashCode
+
+  @Benchmark
+  def combineAll: CIString = Monoid[CIString].combineAll(ciList)
 }
 
 object CIStringBench {
   val ci = CIString("A Case-Insensitive String")
+
+  val ciList = List(
+    CIString("A"),
+    CIString("B"),
+    CIString("C"),
+    CIString("D"),
+    CIString("E"),
+    CIString("F"),
+    CIString("G"),
+    CIString("H"),
+    CIString("I")
+  )
 }

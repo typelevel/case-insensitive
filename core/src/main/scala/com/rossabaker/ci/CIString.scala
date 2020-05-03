@@ -68,6 +68,11 @@ object CIString {
       // Monoid
       val empty = CIString.empty
       def combine(x: CIString, y: CIString) = CIString(x.toString + y.toString)
+      override def combineAll(xs: IterableOnce[CIString]): CIString = {
+        val sb = new StringBuilder
+        xs.iterator.foreach(ci => sb.append(ci.toString))
+        CIString(sb.toString)
+      }
 
       // Show
       def show(t: CIString): String = t.toString
