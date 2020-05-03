@@ -1,5 +1,7 @@
 package com.rossabaker.ci
 
+import cats.Show
+import cats.kernel.{Hash, LowerBounded, Monoid, Order, PartialOrder}
 import scala.math.Ordered
 
 final class CIString private (override val toString: String) extends Ordered[CIString] {
@@ -21,4 +23,34 @@ final class CIString private (override val toString: String) extends Ordered[CIS
 
 object CIString {
   def apply(value: String): CIString = new CIString(value)
+
+  val empty = CIString("")
+
+  implicit val catsInstancesForComRossbakerCIString: Order[CIString]
+    with Hash[CIString]
+    with LowerBounded[CIString]
+    with Monoid[CIString]
+    with Show[CIString] =
+    new Order[CIString]
+      with Hash[CIString]
+      with LowerBounded[CIString]
+      with Monoid[CIString]
+      with Show[CIString] { self =>
+      // Order
+      def compare(x: CIString, y: CIString): Int = x.compare(y)
+
+      // Hash
+      def hash(x: CIString): Int = x.hashCode
+
+      // LowerBounded
+      def minBound: CIString = empty
+      val partialOrder: PartialOrder[CIString] = self
+
+      // Monoid
+      val empty = CIString.empty
+      def combine(x: CIString, y: CIString) = CIString(x.toString + y.toString)
+
+      // Show
+      def show(t: CIString): String = t.toString
+    }
 }

@@ -2,6 +2,8 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 import sbt.ForkOptions
 import sbt.Tests._
 
+val catsV = "2.1.0"
+val disciplineSpecs2V = "1.1.0"
 val specs2V = "4.9.4"
 
 val kindProjectorV = "0.11.0"
@@ -17,6 +19,10 @@ lazy val core = project.in(file("core"))
   .settings(commonSettings)
   .settings(
     name := "case-insensitive",
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-core" % catsV,
+      "org.typelevel" %% "cats-laws" % catsV % Test,
+    ),
     Test / testGrouping := {
       val (turkish, english) = (Test / definedTests).value.partition(_.name.contains("Turkey"))
       def group(language: String, tests: Seq[TestDefinition]) =
@@ -85,8 +91,9 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % betterMonadicForV),
 
   libraryDependencies ++= Seq(
-    "org.specs2"                  %% "specs2-core"                % specs2V       % Test,
-    "org.specs2"                  %% "specs2-scalacheck"          % specs2V       % Test
+    "org.specs2"                  %% "specs2-core"                % specs2V           % Test,
+    "org.specs2"                  %% "specs2-scalacheck"          % specs2V           % Test,
+    "org.typelevel"               %% "discipline-specs2"          % disciplineSpecs2V % Test,
   )
 )
 

@@ -1,12 +1,14 @@
 package com.rossabaker.ci
 
+import cats.implicits._
+import cats.kernel.laws.discipline._
 import com.rossabaker.ci.arbitraries._
 import org.specs2.mutable.Specification
-import org.specs2.ScalaCheck
 import org.scalacheck.Prop._
+import org.typelevel.discipline.specs2.mutable.Discipline
 import scala.math.signum
 
-class CIStringSpec extends Specification with ScalaCheck {
+class CIStringSpec extends Specification with Discipline {
   "==" >> {
     "is case insensitive" >> forAll { (x: CIString) =>
       val y = CIString(new String(x.toString.toArray.map(_.toUpper)))
@@ -70,4 +72,9 @@ class CIStringSpec extends Specification with ScalaCheck {
       x == CIString(x).toString
     }
   }
+
+  checkAll("Order[CIString]", OrderTests[CIString].order)
+  checkAll("Hash[CIString]", HashTests[CIString].hash)
+  checkAll("LowerBounded[CIString]", LowerBoundedTests[CIString].lowerBounded)
+  checkAll("Monoid[CIString]", MonoidTests[CIString].monoid)
 }
