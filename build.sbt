@@ -134,6 +134,8 @@ inThisBuild(List(
   ),
 
   homepage := Some(url("https://github.com/rossabaker/case-insensitive")),
+  organizationName := "Ross A. Baker",
+  startYear := Some(2020),
   licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
 
   pomIncludeRepository := { _ => false},
@@ -141,5 +143,5 @@ inThisBuild(List(
       "-groups",
       "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
       "-doc-source-url", "https://github.com/rossabaker/case-insensitive/blob/v" + version.value + "€{FILE_PATH}.scala"
-  )
+  ),
 ))
