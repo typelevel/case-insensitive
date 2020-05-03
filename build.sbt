@@ -134,7 +134,7 @@ inThisBuild(List(
   ),
 
   homepage := Some(url("https://github.com/rossabaker/case-insensitive")),
-  licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+  licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
 
   pomIncludeRepository := { _ => false},
   scalacOptions in (Compile, doc) ++= Seq(
