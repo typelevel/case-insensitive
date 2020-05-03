@@ -12,9 +12,28 @@ final class CIString private (override val toString: String) extends Ordered[CIS
       case _ => false
     }
 
+  private[this] var hash = 0
   override def hashCode(): Int = {
-    def hashChar(c: Char) = c.toUpper.toLower.##
-    toString.foldLeft(7)((acc, c) => acc * 31 + hashChar(c))
+    if (hash == 0) {
+      hash = calculateHash
+    }
+    hash
+  }
+
+  private[this] def calculateHash: Int = {
+    var h = 17
+    var i = 0
+    val len = toString.length
+    while (i < len) {
+      // Strings are equal igoring case if either their uppercase or lowercase
+      // forms are equal. Equality of one does not imply the other, so we need
+      // to go in both directions. A character is not guaranteed to make this
+      // round trip, but it doesn't matter as long as all equal characters
+      // hash the same.
+      h = h * 31 + toString.charAt(i).toUpper.toLower
+      i += 1
+    }
+    h
   }
 
   override def compare(that: CIString): Int =

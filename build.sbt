@@ -14,7 +14,7 @@ val betterMonadicForV = "0.3.1"
 lazy val `case-insensitive` = project.in(file("."))
   .disablePlugins(MimaPlugin)
   .enablePlugins(NoPublishPlugin)
-  .aggregate(core, testing, tests)
+  .aggregate(core, testing, tests, bench)
 
 lazy val core = project.in(file("core"))
   .settings(commonSettings)
@@ -58,6 +58,16 @@ lazy val tests = project.in(file("tests"))
     }
   )
   .dependsOn(testing)
+
+lazy val bench = project.in(file("bench"))
+  .disablePlugins(MimaPlugin)
+  .enablePlugins(NoPublishPlugin)
+  .enablePlugins(JmhPlugin)
+  .settings(commonSettings)
+  .settings(
+    name := "case-insensitive-bench",
+  )
+  .dependsOn(core)
 
 lazy val site = project.in(file("site"))
   .disablePlugins(MimaPlugin)
