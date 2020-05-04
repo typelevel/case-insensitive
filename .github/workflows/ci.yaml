@@ -67,6 +67,6 @@ jobs:
       - name: Install Jekyll
         run: |
           gem install bundler
-          bundle install --system --gemfile=site/Gemfile
+          bundle install --gemfile=site/Gemfile
       - name: Build project site
         run: sbt ++$SCALA_VERSION site/makeMicrosite
