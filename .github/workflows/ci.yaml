@@ -60,8 +60,13 @@ jobs:
         with:
           path: ~/.sbt
           key: sbt-${{ hashFiles('**/build.sbt') }}
+      - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
       - name: Install Jekyll
         run: |
+          gem install bundler
           bundle install --system --gemfile=site/Gemfile
       - name: Build project site
         run: sbt ++$SCALA_VERSION site/makeMicrosite
