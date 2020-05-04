@@ -18,6 +18,7 @@ package com.rossabaker.ci
 
 import cats.Show
 import cats.kernel.{Hash, LowerBounded, Monoid, Order, PartialOrder}
+import com.rossabaker.ci.compat._
 import scala.math.Ordered
 
 /**
@@ -70,6 +71,7 @@ final class CIString private (override val toString: String) extends Ordered[CIS
     this.toString.compareToIgnoreCase(that.toString)
 }
 
+@suppressUnusedImportWarningForCompat
 object CIString {
   def apply(value: String): CIString = new CIString(value)
 
