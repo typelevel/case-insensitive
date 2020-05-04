@@ -124,7 +124,7 @@ lazy val commonSettings = Seq(
 
   addCompilerPlugin("org.typelevel" %% "kind-projector" % kindProjectorV cross CrossVersion.full),
   addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % betterMonadicForV),
-)
+) ++ automateHeaderSettings(Compile, Test)
 
 // General Settings
 inThisBuild(List(
