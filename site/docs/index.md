@@ -108,7 +108,7 @@ Add the following dependency:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.rossabaker" %% "case-insensitive" % "<version>"
+  "com.rossabaker" %% "case-insensitive-testing" % "<version>"
 )
 ```
 
