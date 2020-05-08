@@ -45,9 +45,8 @@ final class CIString private (override val toString: String) extends Ordered[CIS
 
   private[this] var hash = 0
   override def hashCode(): Int = {
-    if (hash == 0) {
+    if (hash == 0)
       hash = calculateHash
-    }
     hash
   }
 
