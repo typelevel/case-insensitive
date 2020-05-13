@@ -1,20 +1,10 @@
 /*
- * Copyright 2020 Ross A. Baker
+ * Copyright 2020 Typelevel Contributors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-package com.rossabaker.ci
+package org.typelevel.ci
 package testing
 
 import java.util.Locale
@@ -22,7 +12,7 @@ import org.scalacheck.{Arbitrary, Cogen, Gen}
 import org.scalacheck.Arbitrary.arbitrary
 
 object arbitraries {
-  implicit val arbitraryForComRossabakerCIString: Arbitrary[CIString] = {
+  implicit val arbitraryForOrgTypelevelCiCIString: Arbitrary[CIString] = {
     val chars = (Character.MIN_VALUE until Character.MAX_VALUE).map(_.toChar)
     // These characters have odd properties when folding
     val weirdCharFolds =
@@ -37,6 +27,6 @@ object arbitraries {
     Arbitrary(Gen.listOf(genChar).map(cs => CIString(cs.mkString)))
   }
 
-  implicit val cogenForComRossabakerCIString: Cogen[CIString] =
+  implicit val cogenForOrgTypelevelCiCIString: Cogen[CIString] =
     Cogen[String].contramap(ci => new String(ci.toString.toArray.map(_.toLower)))
 }

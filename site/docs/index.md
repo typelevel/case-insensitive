@@ -3,7 +3,7 @@ layout: home
 
 ---
 
-# case-insensitive - Case-insensitive string for Scala [![Build Status](https://travis-ci.com/rossabaker/case-insensitive.svg?branch=master)](https://travis-ci.com/rossabaker/case-insensitive) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.rossabaker/case-insensitive_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.rossabaker/case-insensitive_2.12)
+# case-insensitive - Case-insensitive string for Scala  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.typelevel/case-insensitive_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.typelevel/case-insensitive_2.12)
 
 `case-insensitive` provides a case-insensitive string type for Scala.
 Design goals are:
@@ -23,7 +23,7 @@ To use case-insensitive in an existing SBT project with Scala 2.12 or a later ve
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.rossabaker" %% "case-insensitive" % "<version>"
+  "org.typelevel" %% "case-insensitive" % "<version>"
 )
 ```
 
@@ -32,7 +32,7 @@ libraryDependencies ++= Seq(
 This library provides a `CIString` type.
 
 ```scala mdoc:silent
-import com.rossabaker.ci.CIString
+import org.typelevel.ci.CIString
 ```
 
 Construct case-insensitive strings with the apply method:
@@ -108,14 +108,14 @@ Add the following dependency:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.rossabaker" %% "case-insensitive-testing" % "<version>"
+  "org.typelevel" %% "case-insensitive-testing" % "<version>"
 )
 ```
 
 Import the arbitraries:
 
 ```scala mdoc:silent
-import com.rossabaker.ci.testing.arbitraries._
+import org.typelevel.ci.testing.arbitraries._
 import org.scalacheck.Prop
 ```
 
