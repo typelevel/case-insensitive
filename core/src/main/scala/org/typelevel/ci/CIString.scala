@@ -8,6 +8,7 @@ package org.typelevel.ci
 
 import cats.Show
 import cats.kernel.{Hash, LowerBounded, Monoid, Order, PartialOrder}
+import java.io.Serializable
 import org.typelevel.ci.compat._
 import scala.math.Ordered
 
@@ -25,7 +26,9 @@ import scala.math.Ordered
   *
   * @param toString The original value the CI String was constructed with.
   */
-final class CIString private (override val toString: String) extends Ordered[CIString] {
+final class CIString private (override val toString: String)
+    extends Ordered[CIString]
+    with Serializable {
   override def equals(that: Any): Boolean =
     that match {
       case that: CIString =>
