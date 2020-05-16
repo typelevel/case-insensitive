@@ -36,7 +36,7 @@ final class CIString private (override val toString: String)
       case _ => false
     }
 
-  private[this] var hash = 0
+  @transient private[this] var hash = 0
   override def hashCode(): Int = {
     if (hash == 0)
       hash = calculateHash
