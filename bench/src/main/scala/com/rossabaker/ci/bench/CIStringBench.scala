@@ -17,6 +17,9 @@ class CIStringBench {
   def hash: Int = ci.hashCode
 
   @Benchmark
+  def hashUncached: Int = CIString("A Case-Insensitive String").hashCode
+
+  @Benchmark
   def combineAll: CIString = Monoid[CIString].combineAll(ciList)
 }
 
