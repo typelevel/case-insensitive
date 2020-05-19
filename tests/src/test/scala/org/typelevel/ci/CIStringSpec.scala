@@ -103,5 +103,5 @@ class CIStringSpec extends Specification with Discipline {
 
   checkAll(
     "CIString instances",
-    SerializableTests.serializable(CIString.catsInstancesForComRossbakerCIString))
+    SerializableTests.serializable(CIString.catsInstancesForOrgTypelevelCIString))
 }
