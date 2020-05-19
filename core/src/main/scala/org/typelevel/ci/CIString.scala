@@ -66,7 +66,7 @@ object CIString {
 
   val empty = CIString("")
 
-  implicit val catsInstancesForComRossbakerCIString: Order[CIString]
+  implicit val catsInstancesForOrgTypelevelCIString: Order[CIString]
     with Hash[CIString]
     with LowerBounded[CIString]
     with Monoid[CIString]
