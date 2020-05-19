@@ -8,6 +8,7 @@ package org.typelevel.ci
 
 import cats.Show
 import cats.kernel.{Hash, LowerBounded, Monoid, Order, PartialOrder}
+import java.io.Serializable
 import org.typelevel.ci.compat._
 import scala.math.Ordered
 import scala.util.hashing.MurmurHash3.{finalizeHash, mix, mixLast}
@@ -26,7 +27,9 @@ import scala.util.hashing.MurmurHash3.{finalizeHash, mix, mixLast}
   *
   * @param toString The original value the CI String was constructed with.
   */
-final class CIString private (override val toString: String) extends Ordered[CIString] {
+final class CIString private (override val toString: String)
+    extends Ordered[CIString]
+    with Serializable {
   import CIString._
 
   override def equals(that: Any): Boolean =
@@ -36,7 +39,7 @@ final class CIString private (override val toString: String) extends Ordered[CIS
       case _ => false
     }
 
-  private[this] var hash = 0
+  @transient private[this] var hash = 0
   override def hashCode(): Int = {
     // 1 in 2^32 strings will hash to UninitializedHash and always be
     // recalculated, but this is fast and lightweight for the other 2^32-1.
@@ -75,7 +78,7 @@ object CIString {
 
   val empty = CIString("")
 
-  implicit val catsInstancesForComRossbakerCIString: Order[CIString]
+  implicit val catsInstancesForOrgTypelevelCIString: Order[CIString]
     with Hash[CIString]
     with LowerBounded[CIString]
     with Monoid[CIString]
