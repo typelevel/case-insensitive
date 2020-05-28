@@ -11,6 +11,7 @@ import cats.kernel.{Hash, LowerBounded, Monoid, Order, PartialOrder}
 import java.io.Serializable
 import org.typelevel.ci.compat._
 import scala.math.Ordered
+import scala.util.hashing.MurmurHash3.{finalizeHash, mix, mixLast}
 
 /**
   * A case-insensitive String.
@@ -29,6 +30,8 @@ import scala.math.Ordered
 final class CIString private (override val toString: String)
     extends Ordered[CIString]
     with Serializable {
+  import CIString._
+
   override def equals(that: Any): Boolean =
     that match {
       case that: CIString =>
@@ -38,24 +41,27 @@ final class CIString private (override val toString: String)
 
   @transient private[this] var hash = 0
   override def hashCode(): Int = {
-    if (hash == 0)
+    // 1 in 2^32 strings will hash to UninitializedHash and always be
+    // recalculated, but this is fast and lightweight for the other 2^32-1.
+    if (hash == UninitializedHash)
       hash = calculateHash
     hash
   }
 
   private[this] def calculateHash: Int = {
-    var h = 17
+    // This is just MurmurHash3.stringHashing, except each character is
+    // normalized with a .toUpper.toLower round trip before mixing.
+    var h = HashSeed
     var i = 0
     val len = toString.length
-    while (i < len) {
-      // Strings are equal igoring case if either their uppercase or lowercase
-      // forms are equal. Equality of one does not imply the other, so we need
-      // to go in both directions. A character is not guaranteed to make this
-      // round trip, but it doesn't matter as long as all equal characters
-      // hash the same.
-      h = h * 31 + toString.charAt(i).toUpper.toLower
-      i += 1
+    def ncharAt(i: Int) = toString.charAt(i).toUpper.toLower
+    while (i + 1 < len) {
+      val data = (ncharAt(i) << 16) + ncharAt(i + 1)
+      h = mix(h, data)
+      i += 2
     }
+    if (i < len) h = mixLast(h, ncharAt(i).toInt)
+    finalizeHash(h, len)
     h
   }
 
@@ -65,6 +71,9 @@ final class CIString private (override val toString: String)
 
 @suppressUnusedImportWarningForCompat
 object CIString {
+  private final val UninitializedHash = 0
+  private final val HashSeed = 0xd9cff017 // "CIString".##
+
   def apply(value: String): CIString = new CIString(value)
 
   val empty = CIString("")
