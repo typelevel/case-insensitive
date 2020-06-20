@@ -3,7 +3,7 @@ layout: home
 
 ---
 
-# case-insensitive - Case-insensitive string for Scala [![Build Status](https://travis-ci.com/rossabaker/case-insensitive.svg?branch=master)](https://travis-ci.com/rossabaker/case-insensitive) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.rossabaker/case-insensitive_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.rossabaker/case-insensitive_2.12)
+# case-insensitive - Case-insensitive string for Scala [![Build Status](https://travis-ci.com/rossabaker/case-insensitive.svg?branch=main)](https://travis-ci.com/rossabaker/case-insensitive) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.rossabaker/case-insensitive_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.rossabaker/case-insensitive_2.12)
 
 `case-insensitive` provides a case-insensitive string type for Scala.
 Design goals are:
