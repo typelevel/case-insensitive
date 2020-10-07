@@ -21,8 +21,7 @@ import cats.kernel.{Hash, LowerBounded, Monoid, Order, PartialOrder}
 import com.rossabaker.ci.compat._
 import scala.math.Ordered
 
-/**
-  * A case-insensitive String.
+/** A case-insensitive String.
   *
   * Two CI strings are equal if and only if they are the same length, and each
   * corresponding character is equal after calling either `toUpper` or
