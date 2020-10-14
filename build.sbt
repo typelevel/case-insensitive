@@ -5,7 +5,7 @@ import sbt.Tests._
 val catsV = "2.2.0"
 val disciplineSpecs2V = "1.1.0"
 val scalacheckV = "1.14.3"
-val specs2V = "4.10.4"
+val specs2V = "4.10.5"
 
 val kindProjectorV = "0.11.0"
 val betterMonadicForV = "0.3.1"
