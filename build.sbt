@@ -118,8 +118,6 @@ lazy val site = project.in(file("site"))
 
 // General Settings
 lazy val commonSettings = Seq(
-  crossScalaVersions := Seq(scala_2_12, scala_2_13),
-
   addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % betterMonadicForV),
 
   headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
@@ -133,6 +131,8 @@ inThisBuild(List(
   publishFullName := "Ross A. Baker",
   baseVersion := "0.3",
 
+  crossScalaVersions := Seq(scala_2_12, scala_2_13),
+
   homepage := Some(url("https://github.com/typelevel/case-insensitive")),
   startYear := Some(2020),
   licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
@@ -142,12 +142,11 @@ inThisBuild(List(
   githubWorkflowTargetTags ++= Seq("v*"),
   githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
   githubWorkflowBuildPreamble := Seq(
-    WorkflowStep.Use("olafurpg", "setup-gpg", "v3"),
     WorkflowStep.Use("actions", "setup-ruby", "v1"),
-    WorkflowStep.Run(List("""
-      |gem install bundler
-      |bundle install --gemfile=site/Gemfile
-    """.stripMargin), name = Some("Install Jekyll"))
+    WorkflowStep.Run(List(
+      "gem install bundler",
+      "bundle install --gemfile=site/Gemfile"
+    ), name = Some("Install Jekyll"))
   ),
   githubWorkflowBuild := Seq(
     WorkflowStep.Sbt(List(
@@ -162,15 +161,14 @@ inThisBuild(List(
   ),
   githubWorkflowPublish := Seq(
     WorkflowStep.Sbt(List("ci-release")),
-    WorkflowStep.Run(List(s"""
-      |eval "$$(ssh-agent -s)"
-      |echo "$$SSH_PRIVATE_KEY" | ssh-add -
-      |git config --global user.name "GitHub Actions CI"
-      |git config --global user.email "ghactions@invalid"
-      |sbt ++$scala_2_12 site/publishMicrosite
-    """.stripMargin),
+    WorkflowStep.Run(List(
+      """eval "$$(ssh-agent -s)"""",
+      """echo "$$SSH_PRIVATE_KEY" | ssh-add -""",
+      """git config --global user.name "GitHub Actions CI"""",
+      """git config --global user.email "ghactions@invalid""""
+    )),
+    WorkflowStep.Sbt(List("site/publishMicrosite"),
       name = Some(s"Publish microsite"),
-      env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}")
-    ),
+      env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
   ),
 ))
