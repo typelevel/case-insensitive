@@ -82,10 +82,10 @@ lazy val site = project.in(file("site"))
       micrositeName := "case-insensitive",
       micrositeDescription := "Case-insensitive data structures for Scala",
       micrositeAuthor := "Ross A. Baker",
-      micrositeGithubOwner := "rossabaker",
+      micrositeGithubOwner := "typelevel",
       micrositeGithubRepo := "case-insensitive",
       micrositeBaseUrl := "/case-insensitive",
-      micrositeDocumentationUrl := "https://www.javadoc.io/doc/com.rossabaker/case-insensitive_2.12",
+      micrositeDocumentationUrl := "https://www.javadoc.io/doc/org.typelevel/case-insensitive_2.12",
       micrositeGitterChannel := false,
       micrositeFooterText := None,
       micrositeHighlightTheme := "atom-one-light",
@@ -123,17 +123,19 @@ lazy val commonSettings = Seq(
 
   addCompilerPlugin("org.typelevel" %% "kind-projector" % kindProjectorV cross CrossVersion.full),
   addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % betterMonadicForV),
+
+  headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
 ) ++ automateHeaderSettings(Compile, Test)
 
 // General Settings
 inThisBuild(List(
-  organization := "com.rossabaker",
+  organization := "org.typelevel",
+  organizationName := "Typelevel Contributors",
   developers := List(
     Developer("rossabaker", "Ross A. Baker", "ross@rossabaker.com", url("https://github.com/rossabaker"))
   ),
 
-  homepage := Some(url("https://github.com/rossabaker/case-insensitive")),
-  organizationName := "Ross A. Baker",
+  homepage := Some(url("https://github.com/typelevel/case-insensitive")),
   startYear := Some(2020),
   licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
 
@@ -141,6 +143,6 @@ inThisBuild(List(
   scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
       "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
-      "-doc-source-url", "https://github.com/rossabaker/case-insensitive/blob/v" + version.value + "€{FILE_PATH}.scala"
+      "-doc-source-url", "https://github.com/typelevel/case-insensitive/blob/v" + version.value + "€{FILE_PATH}.scala"
   ),
 ))
