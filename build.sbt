@@ -10,11 +10,13 @@ val specs2V = "4.10.5"
 val kindProjectorV = "0.11.0"
 val betterMonadicForV = "0.3.1"
 
+val scala_2_12 = "2.12.12"
+val scala_2_13 = "2.13.3"
+
 // Projects
 lazy val `case-insensitive` = project.in(file("."))
-  .disablePlugins(MimaPlugin)
-  .enablePlugins(NoPublishPlugin)
-  .aggregate(core, testing, tests, bench)
+  .settings(noPublishSettings)
+  .aggregate(core, testing, tests, bench, site)
 
 lazy val core = project.in(file("core"))
   .settings(commonSettings)
@@ -36,8 +38,7 @@ lazy val testing = project.in(file("testing"))
   .dependsOn(core)
 
 lazy val tests = project.in(file("tests"))
-  .disablePlugins(MimaPlugin)
-  .enablePlugins(NoPublishPlugin)
+  .settings(noPublishSettings)
   .settings(commonSettings)
   .settings(
     name := "case-insensitive-tests",
@@ -61,7 +62,7 @@ lazy val tests = project.in(file("tests"))
 
 lazy val bench = project.in(file("bench"))
   .disablePlugins(MimaPlugin)
-  .enablePlugins(NoPublishPlugin)
+  .settings(noPublishSettings)
   .enablePlugins(JmhPlugin)
   .settings(commonSettings)
   .settings(
@@ -70,10 +71,9 @@ lazy val bench = project.in(file("bench"))
   .dependsOn(core)
 
 lazy val site = project.in(file("site"))
-  .disablePlugins(MimaPlugin)
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
-  .enablePlugins(NoPublishPlugin)
+  .settings(noPublishSettings)
   .settings(commonSettings)
   .dependsOn(core, testing)
   .settings{
@@ -118,10 +118,8 @@ lazy val site = project.in(file("site"))
 
 // General Settings
 lazy val commonSettings = Seq(
-  scalaVersion := "2.13.1",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.11"),
+  crossScalaVersions := Seq(scala_2_12, scala_2_13),
 
-  addCompilerPlugin("org.typelevel" %% "kind-projector" % kindProjectorV cross CrossVersion.full),
   addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % betterMonadicForV),
 
   headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
@@ -130,19 +128,49 @@ lazy val commonSettings = Seq(
 // General Settings
 inThisBuild(List(
   organization := "org.typelevel",
-  organizationName := "Typelevel Contributors",
-  developers := List(
-    Developer("rossabaker", "Ross A. Baker", "ross@rossabaker.com", url("https://github.com/rossabaker"))
-  ),
+  organizationName := "Typelevel",
+  publishGithubUser := "rossabaker",
+  publishFullName := "Ross A. Baker",
+  baseVersion := "0.3",
 
   homepage := Some(url("https://github.com/typelevel/case-insensitive")),
   startYear := Some(2020),
   licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
+  scmInfo := Some(ScmInfo(url("https://github.com/typelevel/case-insensitive"),
+    "git@github.com:typelevel/case-insensitive.git")),
 
-  pomIncludeRepository := { _ => false},
-  scalacOptions in (Compile, doc) ++= Seq(
-      "-groups",
-      "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
-      "-doc-source-url", "https://github.com/typelevel/case-insensitive/blob/v" + version.value + "€{FILE_PATH}.scala"
+  githubWorkflowTargetTags ++= Seq("v*"),
+  githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
+  githubWorkflowBuildPreamble := Seq(
+    WorkflowStep.Use("olafurpg", "setup-gpg", "v3"),
+    WorkflowStep.Use("actions", "setup-ruby", "v1"),
+    WorkflowStep.Run(List("""
+      |gem install bundler
+      |bundle install --gemfile=site/Gemfile
+    """.stripMargin), name = Some("Install Jekyll"))
+  ),
+  githubWorkflowBuild := Seq(
+    WorkflowStep.Sbt(List(
+      "headerCheck",
+      "test:headerCheck",
+      "scalafmtCheckAll",
+      "testIfRelevant",
+      "mimaReportBinaryIssuesIfRelevant",
+      "doc",
+      "makeMicrosite"
+    )),
+  ),
+  githubWorkflowPublish := Seq(
+    WorkflowStep.Sbt(List("ci-release")),
+    WorkflowStep.Run(List(s"""
+      |eval "$$(ssh-agent -s)"
+      |echo "$$SSH_PRIVATE_KEY" | ssh-add -
+      |git config --global user.name "GitHub Actions CI"
+      |git config --global user.email "ghactions@invalid"
+      |sbt ++$scala_2_12 site/publishMicrosite
+    """.stripMargin),
+      name = Some(s"Publish microsite"),
+      env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}")
+    ),
   ),
 ))
