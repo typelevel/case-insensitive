@@ -122,7 +122,7 @@ import org.scalacheck.Prop
 And use them in your property tests:
 
 ```scala mdoc
-Prop.forAll { x: CIString => x == x }.check
+Prop.forAll { (x: CIString) => x == x }.check()
 ```
 
 ## FAQ
