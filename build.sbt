@@ -15,7 +15,7 @@ val scala_2_13 = "2.13.3"
 
 // Projects
 lazy val `case-insensitive` = project.in(file("."))
-  .settings(noPublishSettings)
+  .enablePlugins(NoPublishPlugin)
   .aggregate(core, testing, tests, bench, site)
 
 lazy val core = project.in(file("core"))
@@ -38,7 +38,7 @@ lazy val testing = project.in(file("testing"))
   .dependsOn(core)
 
 lazy val tests = project.in(file("tests"))
-  .settings(noPublishSettings)
+  .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
   .settings(
     name := "case-insensitive-tests",
@@ -61,8 +61,7 @@ lazy val tests = project.in(file("tests"))
   .dependsOn(testing)
 
 lazy val bench = project.in(file("bench"))
-  .disablePlugins(MimaPlugin)
-  .settings(noPublishSettings)
+  .enablePlugins(NoPublishPlugin)
   .enablePlugins(JmhPlugin)
   .settings(commonSettings)
   .settings(
@@ -73,7 +72,7 @@ lazy val bench = project.in(file("bench"))
 lazy val site = project.in(file("site"))
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
-  .settings(noPublishSettings)
+  .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
   .dependsOn(core, testing)
   .settings{
