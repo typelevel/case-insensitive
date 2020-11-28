@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Typelevel Contributors
+ * Copyright 2020 Typelevel
  *
  * SPDX-License-Identifier: Apache-2.0
  */
