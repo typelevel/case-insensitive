@@ -7,7 +7,7 @@ val disciplineSpecs2V = "1.1.2"
 val scalacheckV = "1.15.1"
 val specs2V = "4.10.5"
 
-val kindProjectorV = "0.11.1"
+val kindProjectorV = "0.11.2"
 val betterMonadicForV = "0.3.1"
 
 val scala_2_12 = "2.12.12"
