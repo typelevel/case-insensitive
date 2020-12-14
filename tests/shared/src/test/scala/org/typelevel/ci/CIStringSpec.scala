@@ -8,7 +8,6 @@ package org.typelevel.ci
 
 import cats.implicits._
 import cats.kernel.laws.discipline._
-import java.io._
 import org.typelevel.ci.testing.arbitraries._
 import org.specs2.mutable.Specification
 import org.scalacheck.Prop._
@@ -77,22 +76,6 @@ class CIStringSpec extends Specification with Discipline {
   "toString" >> {
     "is inverse of CI.apply" >> forAll { (x: String) =>
       x == CIString(x).toString
-    }
-  }
-
-  "serialization" >> {
-    def roundTrip[A](x: A): A = {
-      val baos = new ByteArrayOutputStream
-      val oos = new ObjectOutputStream(baos)
-      oos.writeObject(x)
-      oos.close()
-      val bais = new ByteArrayInputStream(baos.toByteArray)
-      val ois = new ObjectInputStream(bais)
-      ois.readObject().asInstanceOf[A]
-    }
-
-    "round trips" >> forAll { (x: CIString) =>
-      x.eqv(roundTrip(x))
     }
   }
 

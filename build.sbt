@@ -1,4 +1,4 @@
-import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 import sbt.ForkOptions
 import sbt.Tests._
 
@@ -14,40 +14,52 @@ val scala_2_12 = "2.12.12"
 val scala_2_13 = "2.13.3"
 
 // Projects
-lazy val `case-insensitive` = project.in(file("."))
+lazy val `case-insensitive` = project
+  .in(file("."))
   .enablePlugins(NoPublishPlugin)
-  .aggregate(core, testing, tests, bench, site)
+  .aggregate(core.jvm, core.js, testing.jvm, testing.js, tests.jvm, tests.js, bench, site)
 
-lazy val core = project.in(file("core"))
+lazy val core = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
+  .in(file("core"))
   .settings(commonSettings)
   .settings(
     name := "case-insensitive",
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-core" % catsV,
-    ),
+      "org.typelevel" %%% "cats-core" % catsV
+    )
   )
 
-lazy val testing = project.in(file("testing"))
+lazy val testing = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
+  .in(file("testing"))
   .settings(commonSettings)
   .settings(
     name := "case-insensitive-testing",
     libraryDependencies ++= Seq(
-      "org.scalacheck" %% "scalacheck" % scalacheckV,
-    ),
+      "org.scalacheck" %%% "scalacheck" % scalacheckV
+    )
+  )
+  .jsSettings(
+    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.0.0"
   )
   .dependsOn(core)
 
-lazy val tests = project.in(file("tests"))
+lazy val tests = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Full)
+  .in(file("tests"))
   .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
   .settings(
     name := "case-insensitive-tests",
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-laws" % catsV,
-      "org.specs2" %% "specs2-core" % specs2V,
-      "org.specs2" %% "specs2-scalacheck" % specs2V,
-      "org.typelevel" %% "discipline-specs2" % disciplineSpecs2V,
-    ).map(_ % Test),
+      "org.typelevel" %%% "cats-laws" % catsV,
+      "org.specs2" %%% "specs2-core" % specs2V,
+      "org.specs2" %%% "specs2-scalacheck" % specs2V,
+      "org.typelevel" %%% "discipline-specs2" % disciplineSpecs2V
+    ).map(_ % Test)
+  )
+  .jvmSettings(
     Test / testGrouping := {
       val (turkish, english) = (Test / definedTests).value.partition(_.name.contains("Turkey"))
       def group(language: String, tests: Seq[TestDefinition]) =
@@ -60,21 +72,22 @@ lazy val tests = project.in(file("tests"))
   )
   .dependsOn(testing)
 
-lazy val bench = project.in(file("bench"))
+lazy val bench = project
+  .in(file("bench"))
   .enablePlugins(NoPublishPlugin)
   .enablePlugins(JmhPlugin)
   .settings(commonSettings)
   .settings(
     name := "case-insensitive-bench",
   )
-  .dependsOn(core)
+  .dependsOn(core.jvm)
 
 lazy val site = project.in(file("site"))
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
   .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
-  .dependsOn(core, testing)
+  .dependsOn(core.jvm, core.js, testing.jvm, testing.js)
   .settings{
     import microsites._
     Seq(
