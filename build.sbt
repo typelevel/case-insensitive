@@ -11,7 +11,7 @@ val kindProjectorV = "0.11.2"
 val betterMonadicForV = "0.3.1"
 
 val scala_2_12 = "2.12.12"
-val scala_2_13 = "2.13.3"
+val scala_2_13 = "2.13.4"
 
 // Projects
 lazy val `case-insensitive` = project
