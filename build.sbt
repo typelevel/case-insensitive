@@ -111,15 +111,6 @@ lazy val site = project.in(file("site"))
         "gray-lighter" -> "#F4F3F4",
         "white-color" -> "#FFFFFF"
       ),
-      micrositeCompilingDocsTool := WithMdoc,
-      scalacOptions in Tut --= Seq(
-        "-Xfatal-warnings",
-        "-Ywarn-unused-import",
-        "-Ywarn-numeric-widen",
-        "-Ywarn-dead-code",
-        "-Ywarn-unused:imports",
-        "-Xlint:-missing-interpolator,_"
-      ),
       micrositePushSiteWith := GHPagesPlugin,
       micrositeExtraMdFiles := Map(
           file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "100")),
