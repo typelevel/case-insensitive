@@ -5,13 +5,7 @@ import sbt.Tests._
 val catsV = "2.3.1"
 val disciplineSpecs2V = "1.1.3"
 val scalacheckV = "1.15.2"
-val specs2V = "4.10.5"
-
-val kindProjectorV = "0.11.2"
-val betterMonadicForV = "0.3.1"
-
-val scala_2_12 = "2.12.12"
-val scala_2_13 = "2.13.4"
+val disciplineMunitV = "1.0.4"
 
 // Projects
 lazy val `case-insensitive` = project
@@ -54,9 +48,7 @@ lazy val tests = crossProject(JSPlatform, JVMPlatform)
     name := "case-insensitive-tests",
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-laws" % catsV,
-      "org.specs2" %%% "specs2-core" % specs2V,
-      "org.specs2" %%% "specs2-scalacheck" % specs2V,
-      "org.typelevel" %%% "discipline-specs2" % disciplineSpecs2V
+      "org.typelevel" %%% "discipline-munit" % disciplineMunitV,
     ).map(_ % Test)
   )
   .jvmSettings(
@@ -121,8 +113,6 @@ lazy val site = project.in(file("site"))
 
 // General Settings
 lazy val commonSettings = Seq(
-  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % betterMonadicForV),
-
   headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
 ) ++ automateHeaderSettings(Compile, Test)
 
@@ -134,7 +124,8 @@ inThisBuild(List(
   publishFullName := "Ross A. Baker",
   baseVersion := "0.3",
 
-  crossScalaVersions := Seq(scala_2_12, scala_2_13),
+  crossScalaVersions := Seq("2.12.12", "2.13.4", "3.0.0-M2", "3.0.0-M3"),
+  scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
 
   homepage := Some(url("https://github.com/typelevel/case-insensitive")),
   startYear := Some(2020),
@@ -174,4 +165,7 @@ inThisBuild(List(
       name = Some(s"Publish microsite"),
       env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
   ),
+
+  testFrameworks += new TestFramework("munit.Framework"),
+  Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) }
 ))

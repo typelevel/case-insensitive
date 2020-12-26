@@ -8,13 +8,12 @@ package org.typelevel.ci
 
 import cats.implicits._
 import java.io._
+import munit.ScalaCheckSuite
 import org.typelevel.ci.testing.arbitraries._
-import org.specs2.mutable.Specification
 import org.scalacheck.Prop._
-import org.typelevel.discipline.specs2.mutable.Discipline
 
-class CIStringJVMSpec extends Specification with Discipline {
-  "serialization" >> {
+class CIStringJVMSuite extends ScalaCheckSuite {
+  property("serialization round trips") {
     def roundTrip[A](x: A): A = {
       val baos = new ByteArrayOutputStream
       val oos = new ObjectOutputStream(baos)
@@ -25,7 +24,7 @@ class CIStringJVMSpec extends Specification with Discipline {
       ois.readObject().asInstanceOf[A]
     }
 
-    "round trips" >> forAll { (x: CIString) =>
+    forAll { (x: CIString) =>
       x.eqv(roundTrip(x))
     }
   }
