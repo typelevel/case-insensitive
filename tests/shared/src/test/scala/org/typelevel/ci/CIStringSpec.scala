@@ -11,6 +11,7 @@ import cats.kernel.laws.discipline._
 import org.typelevel.ci.testing.arbitraries._
 import org.specs2.mutable.Specification
 import org.scalacheck.Prop._
+import org.typelevel.ci.CIString.{isEmpty, nonEmpty, trim}
 import org.typelevel.discipline.specs2.mutable.Discipline
 import scala.math.signum
 
@@ -76,6 +77,30 @@ class CIStringSpec extends Specification with Discipline {
   "toString" >> {
     "is inverse of CI.apply" >> forAll { (x: String) =>
       x == CIString(x).toString
+    }
+  }
+
+  "isEmpty" >> {
+    "is true given an empty string" >> {
+      isEmpty(CIString(""))
+    }
+
+    "is false given a non-empty string" >> {
+      !isEmpty(CIString("non-empty string"))
+    }
+
+    "is never equal to .nonEmpty for any given string" >> forAll { (ci: CIString) =>
+      isEmpty(ci) != nonEmpty(ci)
+    }
+  }
+
+  "nonEmpty" >> {
+    "is true given a non-empty string" >> {
+      nonEmpty(CIString("non-empty string"))
+    }
+
+    "is false given an empty string" >> {
+      !nonEmpty(CIString(""))
     }
   }
 
