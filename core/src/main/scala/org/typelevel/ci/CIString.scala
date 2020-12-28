@@ -65,6 +65,9 @@ final class CIString private (override val toString: String)
 @suppressUnusedImportWarningForCompat
 object CIString {
   def apply(value: String): CIString = new CIString(value)
+  def transform(f: String => String): CIString = CIString(f(toString))
+  def isEmpty(t: CIString): Boolean = t == empty
+  def nonEmpty(t: CIString): Boolean = !isEmpty(t)
 
   val empty = CIString("")
 
