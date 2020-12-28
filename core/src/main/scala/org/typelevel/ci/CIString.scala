@@ -60,14 +60,19 @@ final class CIString private (override val toString: String)
 
   override def compare(that: CIString): Int =
     this.toString.compareToIgnoreCase(that.toString)
+
+  def transform(f: String => String): CIString = CIString(f(toString))
+
+  def isEmpty: Boolean = this.toString.isEmpty
+
+  def nonEmpty: Boolean = this.toString.nonEmpty
+
+  def trim: CIString = transform(_.trim)
 }
 
 @suppressUnusedImportWarningForCompat
 object CIString {
   def apply(value: String): CIString = new CIString(value)
-  def transform(f: String => String): CIString = CIString(f(toString))
-  def isEmpty(t: CIString): Boolean = t == empty
-  def nonEmpty(t: CIString): Boolean = !isEmpty(t)
 
   val empty = CIString("")
 

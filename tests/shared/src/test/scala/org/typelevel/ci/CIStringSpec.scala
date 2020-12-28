@@ -11,7 +11,6 @@ import cats.kernel.laws.discipline._
 import org.typelevel.ci.testing.arbitraries._
 import org.specs2.mutable.Specification
 import org.scalacheck.Prop._
-import org.typelevel.ci.CIString.{isEmpty, nonEmpty}
 import org.typelevel.discipline.specs2.mutable.Discipline
 import scala.math.signum
 
@@ -80,27 +79,48 @@ class CIStringSpec extends Specification with Discipline {
     }
   }
 
+  "transform" >> {
+    "is commutative with an application of CIString on the transformation function" >> forAll {
+      (s: String, f: String => String) =>
+        CIString(s).transform(f) == CIString(f(s))
+    }
+  }
+
   "isEmpty" >> {
     "is true given an empty string" >> {
-      isEmpty(CIString(""))
+      CIString("").isEmpty
     }
 
     "is false given a non-empty string" >> {
-      !isEmpty(CIString("non-empty string"))
+      !CIString("non-empty string").isEmpty
     }
 
     "is never equal to .nonEmpty for any given string" >> forAll { (ci: CIString) =>
-      isEmpty(ci) != nonEmpty(ci)
+      ci.isEmpty != ci.nonEmpty
     }
   }
 
   "nonEmpty" >> {
     "is true given a non-empty string" >> {
-      nonEmpty(CIString("non-empty string"))
+      CIString("non-empty string").nonEmpty
     }
 
     "is false given an empty string" >> {
-      !nonEmpty(CIString(""))
+      !CIString("").nonEmpty
+    }
+  }
+
+  "trim" >> {
+    "removes leading whitespace" >> {
+      CIString("  text").trim == CIString("text")
+    }
+
+    "removes trailing whitespace" >> {
+      CIString("text   ").trim == CIString("text")
+    }
+
+    "removes leading and trailing whitespace" >> {
+      CIString("  text   ").trim == CIString("text")
     }
   }
 
