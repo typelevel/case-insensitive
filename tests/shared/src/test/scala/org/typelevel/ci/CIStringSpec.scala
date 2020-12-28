@@ -11,7 +11,7 @@ import cats.kernel.laws.discipline._
 import org.typelevel.ci.testing.arbitraries._
 import org.specs2.mutable.Specification
 import org.scalacheck.Prop._
-import org.typelevel.ci.CIString.{isEmpty, nonEmpty, trim}
+import org.typelevel.ci.CIString.{isEmpty, nonEmpty}
 import org.typelevel.discipline.specs2.mutable.Discipline
 import scala.math.signum
 
