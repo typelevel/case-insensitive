@@ -79,6 +79,51 @@ class CIStringSpec extends Specification with Discipline {
     }
   }
 
+  "transform" >> {
+    "is commutative with an application of CIString on the transformation function" >> forAll {
+      (s: String, f: String => String) =>
+        CIString(s).transform(f) == CIString(f(s))
+    }
+  }
+
+  "isEmpty" >> {
+    "is true given an empty string" >> {
+      CIString("").isEmpty
+    }
+
+    "is false given a non-empty string" >> {
+      !CIString("non-empty string").isEmpty
+    }
+
+    "is never equal to .nonEmpty for any given string" >> forAll { (ci: CIString) =>
+      ci.isEmpty != ci.nonEmpty
+    }
+  }
+
+  "nonEmpty" >> {
+    "is true given a non-empty string" >> {
+      CIString("non-empty string").nonEmpty
+    }
+
+    "is false given an empty string" >> {
+      !CIString("").nonEmpty
+    }
+  }
+
+  "trim" >> {
+    "removes leading whitespace" >> {
+      CIString("  text").trim == CIString("text")
+    }
+
+    "removes trailing whitespace" >> {
+      CIString("text   ").trim == CIString("text")
+    }
+
+    "removes leading and trailing whitespace" >> {
+      CIString("  text   ").trim == CIString("text")
+    }
+  }
+
   checkAll("Order[CIString]", OrderTests[CIString].order)
   checkAll("Hash[CIString]", HashTests[CIString].hash)
   checkAll("LowerBounded[CIString]", LowerBoundedTests[CIString].lowerBounded)
