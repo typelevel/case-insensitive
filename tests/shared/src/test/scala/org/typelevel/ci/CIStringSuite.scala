@@ -13,7 +13,7 @@ import org.typelevel.ci.testing.arbitraries._
 import org.scalacheck.Prop._
 import scala.math.signum
 
-class CIStringSpec extends DisciplineSuite {
+class CIStringSuite extends DisciplineSuite {
   property("case insensitive equality") {
     forAll { (x: CIString) =>
       val y = CIString(new String(x.toString.toArray.map(_.toUpper)))
