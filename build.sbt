@@ -128,7 +128,7 @@ inThisBuild(List(
   organizationName := "Typelevel",
   publishGithubUser := "rossabaker",
   publishFullName := "Ross A. Baker",
-  baseVersion := "0.3",
+  baseVersion := "0.4",
 
   crossScalaVersions := Seq("2.12.12", "2.13.4", "3.0.0-M2", "3.0.0-M3"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
