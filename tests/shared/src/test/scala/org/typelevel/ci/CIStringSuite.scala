@@ -89,6 +89,40 @@ class CIStringSpec extends DisciplineSuite {
     }
   }
 
+  test("isEmpty is true given an empty string") {
+    CIString("").isEmpty
+  }
+
+  test("isEmpty is false given a non-empty string") {
+    !CIString("non-empty string").isEmpty
+  }
+
+  property("is never equal to .nonEmpty for any given string") {
+    forAll { (ci: CIString) =>
+      ci.isEmpty != ci.nonEmpty
+    }
+  }
+
+  test("nonEmpty is true given a non-empty string") {
+    CIString("non-empty string").nonEmpty
+  }
+
+  test("is false given an empty string") {
+    !CIString("").nonEmpty
+  }
+
+  test("trim removes leading whitespace") {
+    CIString("  text").trim == CIString("text")
+  }
+
+  test("removes trailing whitespace") {
+    CIString("text   ").trim == CIString("text")
+  }
+
+  test("removes leading and trailing whitespace") {
+    CIString("  text   ").trim == CIString("text")
+  }
+
   checkAll("Order[CIString]", OrderTests[CIString].order)
   checkAll("Hash[CIString]", HashTests[CIString].hash)
   checkAll("LowerBounded[CIString]", LowerBoundedTests[CIString].lowerBounded)
