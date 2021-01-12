@@ -11,7 +11,7 @@ val disciplineMunitV = "1.0.4"
 lazy val `case-insensitive` = project
   .in(file("."))
   .enablePlugins(NoPublishPlugin)
-  .aggregate(core.jvm, core.js, testing.jvm, testing.js, tests.jvm, tests.js, bench, site)
+  .aggregate(core.jvm, core.js, testing.jvm, testing.js, tests.jvm, tests.js, bench)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
@@ -85,7 +85,7 @@ lazy val site = project.in(file("site"))
   .enablePlugins(MdocPlugin)
   .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
-  .dependsOn(core.jvm, core.js, testing.jvm, testing.js)
+  .dependsOn(core.jvm, testing.jvm)
   .settings{
     import microsites._
     Seq(
