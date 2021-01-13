@@ -62,7 +62,7 @@ jobs:
       - run: 'sbt ++${{ matrix.scala }} headerCheck test:headerCheck scalafmtCheckAll testIfRelevant mimaReportBinaryIssuesIfRelevant doc'
 
       - if: matrix.scala == '2.13.4'
-        run: sbt ++${{ matrix.scala }} ++${Scala213} site/makeMicrosite
+        run: sbt ++${{ matrix.scala }} ++2.13.4 site/makeMicrosite
 
       - name: Compress target directories
         run: tar cf targets.tar testing/.jvm/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target

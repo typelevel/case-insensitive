@@ -166,7 +166,7 @@ inThisBuild(List(
       "doc",
     )),
     WorkflowStep.Sbt(
-      List("++${Scala213}", "site/makeMicrosite"),
+      List(s"++${Scala213}", "site/makeMicrosite"),
       cond = Some(Scala213Cond)),
   ),
   githubWorkflowPublish := Seq(
