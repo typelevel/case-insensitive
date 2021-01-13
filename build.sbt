@@ -22,12 +22,6 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-core" % catsV
     ),
-    Compile / unmanagedSourceDirectories ++= {
-      val major = if (isDotty.value) "-3" else "-2"
-      List(CrossType.Pure, CrossType.Full).flatMap(
-        _.sharedSrcDir(baseDirectory.value, "main").toList.map(f => file(f.getPath + major))
-      )
-    },
   )
 
 lazy val testing = crossProject(JSPlatform, JVMPlatform)
@@ -120,9 +114,7 @@ lazy val site = project.in(file("site"))
 
 // General Settings
 lazy val commonSettings = Seq(
-  headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax,
-  // dottydoc is still broken on 3.0.0-M3
-  useScala3doc := false,
+  headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
 ) ++ automateHeaderSettings(Compile, Test)
 
 val Scala213 = "2.13.4"
@@ -158,19 +150,10 @@ inThisBuild(List(
       "bundle install --gemfile=site/Gemfile"
     ), name = Some("Install Jekyll"))
   ),
-  githubWorkflowBuild := Seq(
-    WorkflowStep.Sbt(List(
-      "headerCheck",
-      "test:headerCheck",
-      "scalafmtCheckAll",
-      "testIfRelevant",
-      "mimaReportBinaryIssuesIfRelevant",
-      "doc",
-    )),
+  githubWorkflowBuild +=
     WorkflowStep.Sbt(
       List(s"++${Scala213}", "site/makeMicrosite"),
       cond = Some(Scala213Cond)),
-  ),
   githubWorkflowPublish := Seq(
     WorkflowStep.Sbt(List("release")),
     WorkflowStep.Run(List(
@@ -186,4 +169,7 @@ inThisBuild(List(
 
   testFrameworks += new TestFramework("munit.Framework"),
   Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
+
+  // dottydoc is still broken on 3.0.0-M3
+  useScala3doc := false,
 ))
