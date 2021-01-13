@@ -5,7 +5,7 @@ import sbt.Tests._
 val catsV = "2.3.1"
 val disciplineSpecs2V = "1.1.3"
 val scalacheckV = "1.15.2"
-val disciplineMunitV = "1.0"
+val disciplineMunitV = "1.0.4"
 
 // Projects
 lazy val `case-insensitive` = project
