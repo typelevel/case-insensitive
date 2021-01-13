@@ -137,8 +137,8 @@ inThisBuild(List(
   crossScalaVersions := Seq("2.12.12", Scala213, "3.0.0-M2", "3.0.0-M3"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
   versionIntroduced := Map(
-    "3.0.0-M2" -> "0.4.0",
-    "3.0.0-M3" -> "0.4.0"
+    "3.0.0-M2" -> "1.0.0",
+    "3.0.0-M3" -> "1.0.0"
   ),
 
   homepage := Some(url("https://github.com/typelevel/case-insensitive")),
