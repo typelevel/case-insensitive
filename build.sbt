@@ -120,7 +120,9 @@ lazy val site = project.in(file("site"))
 
 // General Settings
 lazy val commonSettings = Seq(
-  headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
+  headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax,
+  // dottydoc is still broken on 3.0.0-M3
+  useScala3doc := false,
 ) ++ automateHeaderSettings(Compile, Test)
 
 val Scala213 = "2.13.4"
@@ -184,7 +186,4 @@ inThisBuild(List(
 
   testFrameworks += new TestFramework("munit.Framework"),
   Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
-
-  // dottydoc is still broken on 3.0.0-M3
-  useScala3doc := false,
 ))
