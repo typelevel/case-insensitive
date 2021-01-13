@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.0.0-RC1 (2021-01-13)
+
+### Enhancements
+
+* [#93](https://github.com/typelevel/case-insensitive/issues/93): Support for ScalaJS-1.x
+* [#104](https://github.com/typelevel/case-insensitive/issues/104): Support for Scala 3.0.0-M2 and Scala-3.0.0-M3
+* [#105](https://github.com/typelevel/case-insensitive/issues/104): Add `transform`, `isEmpty`, `nonEmpty`, and `trim` functions
+
+### Dependencies
+
+* cats-core-2.3.1
+* scalacheck-1.15.1
+
 ## v0.3.0 (2020-05-21)
 
 ### Breaking changes
