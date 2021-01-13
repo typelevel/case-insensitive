@@ -177,5 +177,8 @@ inThisBuild(List(
   ),
 
   testFrameworks += new TestFramework("munit.Framework"),
-  Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) }
+  Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
+
+  // dottydoc is still broken on 3.0.0-M3
+  useScala3doc := false,
 ))
