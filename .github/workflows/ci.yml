@@ -59,7 +59,10 @@ jobs:
       - name: Check that workflows are up to date
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
-      - run: 'sbt ++${{ matrix.scala }} headerCheck test:headerCheck scalafmtCheckAll testIfRelevant mimaReportBinaryIssuesIfRelevant doc makeMicrosite'
+      - run: 'sbt ++${{ matrix.scala }} headerCheck test:headerCheck scalafmtCheckAll testIfRelevant mimaReportBinaryIssuesIfRelevant doc'
+
+      - if: matrix.scala == '2.13.4'
+        run: sbt ++${{ matrix.scala }} ++${Scala213} site/makeMicrosite
 
       - name: Compress target directories
         run: tar cf targets.tar testing/.jvm/target site/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target
@@ -143,7 +146,7 @@ jobs:
           tar xf targets.tar
           rm targets.tar
 
-      - run: sbt ++${{ matrix.scala }} ci-release
+      - run: sbt ++${{ matrix.scala }} release
 
       - run: |
           eval "$$(ssh-agent -s)"
@@ -154,4 +157,4 @@ jobs:
       - name: Publish microsite
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: sbt ++${{ matrix.scala }} site/publishMicrosite
+        run: sbt ++${{ matrix.scala }} ++${Scala213} site/publishMicrosite

@@ -122,6 +122,9 @@ lazy val commonSettings = Seq(
   headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
 ) ++ automateHeaderSettings(Compile, Test)
 
+val Scala213 = "2.13.4"
+val Scala213Cond = s"matrix.scala == '$Scala213'"
+
 // General Settings
 inThisBuild(List(
   organization := "org.typelevel",
@@ -130,7 +133,7 @@ inThisBuild(List(
   publishFullName := "Ross A. Baker",
   baseVersion := "0.4",
 
-  crossScalaVersions := Seq("2.12.12", "2.13.4", "3.0.0-M2", "3.0.0-M3"),
+  crossScalaVersions := Seq("2.12.12", Scala213, "3.0.0-M2", "3.0.0-M3"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
   versionIntroduced := Map(
     "3.0.0-M2" -> "0.4.0",
@@ -160,18 +163,20 @@ inThisBuild(List(
       "testIfRelevant",
       "mimaReportBinaryIssuesIfRelevant",
       "doc",
-      "makeMicrosite"
     )),
+    WorkflowStep.Sbt(
+      List("++${Scala213}", "site/makeMicrosite"),
+      cond = Some(Scala213Cond)),
   ),
   githubWorkflowPublish := Seq(
-    WorkflowStep.Sbt(List("ci-release")),
+    WorkflowStep.Sbt(List("release")),
     WorkflowStep.Run(List(
       """eval "$$(ssh-agent -s)"""",
       """echo "$$SSH_PRIVATE_KEY" | ssh-add -""",
       """git config --global user.name "GitHub Actions CI"""",
       """git config --global user.email "ghactions@invalid""""
     )),
-    WorkflowStep.Sbt(List("site/publishMicrosite"),
+    WorkflowStep.Sbt(List("++${Scala213}", "site/publishMicrosite"),
       name = Some(s"Publish microsite"),
       env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
   ),
