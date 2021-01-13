@@ -65,7 +65,7 @@ jobs:
         run: sbt ++${{ matrix.scala }} ++${Scala213} site/makeMicrosite
 
       - name: Compress target directories
-        run: tar cf targets.tar testing/.jvm/target site/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target
+        run: tar cf targets.tar testing/.jvm/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target
 
       - name: Upload target directories
         uses: actions/upload-artifact@v2
