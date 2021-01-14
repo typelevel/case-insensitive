@@ -7,6 +7,8 @@ val disciplineSpecs2V = "1.1.3"
 val scalacheckV = "1.15.2"
 val disciplineMunitV = "1.0.4"
 
+enablePlugins(SonatypeCiReleasePlugin)
+
 // Projects
 lazy val `case-insensitive` = project
   .in(file("."))
@@ -149,7 +151,7 @@ inThisBuild(List(
 
   githubWorkflowTargetTags ++= Seq("v*"),
   githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
-  githubWorkflowBuildPreamble := Seq(
+  githubWorkflowBuildPreamble ++= Seq(
     WorkflowStep.Use("actions", "setup-ruby", "v1"),
     WorkflowStep.Run(List(
       "gem install bundler",

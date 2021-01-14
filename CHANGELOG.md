@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.0-RC1 (2021-01-13)
+## v1.0.0-RC2 (2021-01-13)
 
 ### Enhancements
 
