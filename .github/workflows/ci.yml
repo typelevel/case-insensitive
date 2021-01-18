@@ -53,6 +53,8 @@ jobs:
           key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
 
       - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.7
 
       - name: Install Jekyll
         run: |
