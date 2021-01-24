@@ -152,7 +152,7 @@ inThisBuild(List(
   githubWorkflowTargetTags ++= Seq("v*"),
   githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
   githubWorkflowBuildPreamble ++= Seq(
-    WorkflowStep.Use("actions", "setup-ruby", "v1", params = Map("ruby-version" -> "2.7")),
+    WorkflowStep.Use(UseRef.Public("actions", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
     WorkflowStep.Run(List(
       "gem install bundler",
       "bundle install --gemfile=site/Gemfile"
