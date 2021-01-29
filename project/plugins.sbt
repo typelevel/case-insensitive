@@ -1,4 +1,4 @@
-addSbtPlugin("com.47deg" % "sbt-microsites" % "1.3.0")
+addSbtPlugin("com.47deg" % "sbt-microsites" % "1.3.1")
 addSbtPlugin("com.codecommit" % "sbt-spiewak-sonatype" % "0.20.1")
 addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.2.16")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.2")
