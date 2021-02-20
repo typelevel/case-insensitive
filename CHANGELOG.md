@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.0.0 (2021-02-18)
+
+### Cross-builds
+
+* Add scala-3.0.0-RC1
+* Drop scala-3.0.0-M2
+
+### Dependencies
+
+* cats-2.4.1
+* scalacheck-1.15.3
+
 ## v1.0.0-RC2 (2021-01-13)
 
 ### Enhancements
