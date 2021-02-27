@@ -136,7 +136,7 @@ inThisBuild(List(
   publishFullName := "Ross A. Baker",
   baseVersion := "0.4",
 
-  crossScalaVersions := Seq("2.12.12", Scala213, "3.0.0-M3", "3.0.0-RC1"),
+  crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0-M3", "3.0.0-RC1"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
   versionIntroduced := Map(
     "3.0.0-M3" -> "1.0.0",
