@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.12.12, 2.13.4, 3.0.0-M3, 3.0.0-RC1]
+        scala: [2.12.12, 2.13.5, 3.0.0-M3, 3.0.0-RC1]
         java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -66,8 +66,8 @@ jobs:
 
       - run: sbt ++${{ matrix.scala }} ci
 
-      - if: matrix.scala == '2.13.4'
-        run: sbt ++${{ matrix.scala }} ++2.13.4 site/makeMicrosite
+      - if: matrix.scala == '2.13.5'
+        run: sbt ++${{ matrix.scala }} ++2.13.5 site/makeMicrosite
 
       - name: Compress target directories
         run: tar cf targets.tar testing/.jvm/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target
@@ -85,7 +85,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.13.4]
+        scala: [2.13.5]
         java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
