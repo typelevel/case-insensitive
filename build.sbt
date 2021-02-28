@@ -125,7 +125,7 @@ lazy val commonSettings = Seq(
   headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
 ) ++ automateHeaderSettings(Compile, Test)
 
-val Scala213 = "2.13.4"
+val Scala213 = "2.13.5"
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 // General Settings
