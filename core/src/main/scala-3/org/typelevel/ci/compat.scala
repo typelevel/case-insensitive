@@ -7,7 +7,11 @@
 package org.typelevel.ci
 
 import scala.annotation.{Annotation, StaticAnnotation}
+import scala.collection.immutable.ArraySeq
 
 private[ci] object compat {
   class suppressUnusedImportWarningForCompat extends Annotation with StaticAnnotation
+
+  def unsafeWrapArray[A](arr: Array[A]): Seq[A] =
+    ArraySeq.unsafeWrapArray(arr)
 }

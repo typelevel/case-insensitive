@@ -125,7 +125,7 @@ package object ci {
 
     // Matched all of pattern to all of name. Success.
     Some(
-      collection.immutable.ArraySeq.unsafeWrapArray(
+      compat.unsafeWrapArray(
         Array.tabulate(patternChunks.length - 1)(n =>
           CIString(input.toString.slice(matchStarts(n), matchEnds(n))))
       ))

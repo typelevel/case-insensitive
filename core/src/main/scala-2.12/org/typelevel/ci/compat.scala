@@ -16,4 +16,7 @@ private[ci] object compat {
   implicit class traversableOnceSyntax[A](private val to: TraversableOnce[A]) extends AnyVal {
     def iterator: Iterator[A] = to.toIterator
   }
+
+  def unsafeWrapArray[A](arr: Array[A]): Seq[A] =
+    arr.toSeq
 }
