@@ -32,13 +32,20 @@ libraryDependencies ++= Seq(
 This library provides a `CIString` type.
 
 ```scala mdoc:silent
-import org.typelevel.ci.CIString
+import org.typelevel.ci._
 ```
 
 Construct case-insensitive strings with the apply method:
 
 ```scala mdoc
 val hello = CIString("Hello")
+```
+
+More concisely, use the `ci` interpolator:
+
+```scala mdoc
+val name = "Otis"
+val greeting = ci"Hello, ${name}"
 ```
 
 Get the original string value with `toString`:

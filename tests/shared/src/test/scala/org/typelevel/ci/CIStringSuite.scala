@@ -9,8 +9,8 @@ package org.typelevel.ci
 import cats.implicits._
 import cats.kernel.laws.discipline._
 import munit.DisciplineSuite
-import org.typelevel.ci.testing.arbitraries._
 import org.scalacheck.Prop._
+import org.typelevel.ci.testing.arbitraries._
 import scala.math.signum
 
 class CIStringSuite extends DisciplineSuite {
@@ -121,6 +121,24 @@ class CIStringSuite extends DisciplineSuite {
 
   test("removes leading and trailing whitespace") {
     CIString("  text   ").trim == CIString("text")
+  }
+
+  property("ci interpolator is consistent with apply") {
+    forAll { (s: String) =>
+      assertEquals(ci"${s}", CIString(s))
+    }
+  }
+
+  property("ci interpolator handles expressions") {
+    forAll { (x: Int, y: Int) =>
+      assertEquals(ci"${x + y}", CIString((x + y).toString))
+    }
+  }
+
+  property("ci interpolator handles multiple parts") {
+    forAll { (a: String, b: String, c: String) =>
+      assertEquals(ci"$a:$b:$c", CIString(s"$a:$b:$c"))
+    }
   }
 
   checkAll("Order[CIString]", OrderTests[CIString].order)
