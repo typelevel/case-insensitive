@@ -141,6 +141,33 @@ class CIStringSuite extends DisciplineSuite {
     }
   }
 
+  property("ci interpolator extractor is case-insensitive") {
+    forAll { (s: String) =>
+      CIString(new String(s.toString.toArray.map(_.toUpper))) match {
+        case ci"${t}" => t == CIString(s)
+        case _ => false
+      }
+
+      CIString(new String(s.toString.toArray.map(_.toLower))) match {
+        case ci"${t}" => t == CIString(s)
+        case _ => false
+      }
+    }
+  }
+
+  test("ci interpolator extracts multiple parts") {
+    CIString("Hello, Aretha") match {
+      case ci"${greeting}, ${name}" => greeting == ci"Hello" && name == ci"Aretha"
+    }
+  }
+
+  test("ci interpolator matches literals") {
+    CIString("literally") match {
+      case ci"LiTeRaLlY" => true
+      case _ => false
+    }
+  }
+
   checkAll("Order[CIString]", OrderTests[CIString].order)
   checkAll("Hash[CIString]", HashTests[CIString].hash)
   checkAll("LowerBounded[CIString]", LowerBoundedTests[CIString].lowerBounded)

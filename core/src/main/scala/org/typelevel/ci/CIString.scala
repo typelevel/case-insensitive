@@ -68,6 +68,8 @@ final class CIString private (override val toString: String)
   def nonEmpty: Boolean = this.toString.nonEmpty
 
   def trim: CIString = transform(_.trim)
+
+  def length: Int = toString.length
 }
 
 @suppressUnusedImportWarningForCompat
