@@ -96,6 +96,12 @@ assert("a" > "B")
 assert(CIString("a") < CIString("B"))
 ```
 
+You can also match strings with the `ci` globbing matcher.  It works like `s`:
+
+```scala mdoc
+val ci"HELLO, ${appellation}" = ci"Hello, Alice"
+```
+
 ## Cats integration
 
 We provide instances of various Cats type classes. The most exciting of these are [`Eq`] and [`Monoid`]:
