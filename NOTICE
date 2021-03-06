@@ -1,3 +1,8 @@
 case-insensitive
 Copyright 2020 Typelevel Contributors
 Licensed under Apache License 2.0 (see LICENSE)
+
+This software contains portions of code derived from Scala
+https://github.com/scala/scala
+Copyright EPFL and Lightbend, Inc.
+Licensed under Apache License 2.0 (see LICENSE)
