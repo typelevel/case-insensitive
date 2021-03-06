@@ -85,42 +85,42 @@ class CIStringSuite extends DisciplineSuite {
   }
   property("toString is inverse of CI.apply") {
     forAll { (x: String) =>
-      x == CIString(x).toString
+      assert(x == CIString(x).toString)
     }
   }
 
   test("isEmpty is true given an empty string") {
-    CIString("").isEmpty
+    assert(CIString("").isEmpty)
   }
 
   test("isEmpty is false given a non-empty string") {
-    !CIString("non-empty string").isEmpty
+    assert(!CIString("non-empty string").isEmpty)
   }
 
   property("is never equal to .nonEmpty for any given string") {
     forAll { (ci: CIString) =>
-      ci.isEmpty != ci.nonEmpty
+      assert(ci.isEmpty != ci.nonEmpty)
     }
   }
 
   test("nonEmpty is true given a non-empty string") {
-    CIString("non-empty string").nonEmpty
+    assert(CIString("non-empty string").nonEmpty)
   }
 
-  test("is false given an empty string") {
-    !CIString("").nonEmpty
+  test("nonEmpty is false given an empty string") {
+    assert(!CIString("").nonEmpty)
   }
 
   test("trim removes leading whitespace") {
-    CIString("  text").trim == CIString("text")
+    assert(CIString("  text").trim == CIString("text"))
   }
 
   test("removes trailing whitespace") {
-    CIString("text   ").trim == CIString("text")
+    assert(CIString("text   ").trim == CIString("text"))
   }
 
   test("removes leading and trailing whitespace") {
-    CIString("  text   ").trim == CIString("text")
+    assert(CIString("  text   ").trim == CIString("text"))
   }
 
   property("ci interpolator is consistent with apply") {
@@ -143,29 +143,29 @@ class CIStringSuite extends DisciplineSuite {
 
   property("ci interpolator extractor is case-insensitive") {
     forAll { (s: String) =>
-      CIString(new String(s.toString.toArray.map(_.toUpper))) match {
+      assert(CIString(new String(s.toString.toArray.map(_.toUpper))) match {
         case ci"${t}" => t == CIString(s)
         case _ => false
-      }
+      })
 
-      CIString(new String(s.toString.toArray.map(_.toLower))) match {
+      assert(CIString(new String(s.toString.toArray.map(_.toLower))) match {
         case ci"${t}" => t == CIString(s)
         case _ => false
-      }
+      })
     }
   }
 
   test("ci interpolator extracts multiple parts") {
-    CIString("Hello, Aretha") match {
+    assert(CIString("Hello, Aretha") match {
       case ci"${greeting}, ${name}" => greeting == ci"Hello" && name == ci"Aretha"
-    }
+    })
   }
 
   test("ci interpolator matches literals") {
-    CIString("literally") match {
+    assert(CIString("literally") match {
       case ci"LiTeRaLlY" => true
       case _ => false
-    }
+    })
   }
 
   checkAll("Order[CIString]", OrderTests[CIString].order)
