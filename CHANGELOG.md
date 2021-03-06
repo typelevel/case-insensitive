@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.0 (2021-03-06)
+
+* Add a `ci` interpolator and `ci` matcher, in the manner of standard library's `s`.
+
 ## v1.0.0 (2021-02-18)
 
 ### Cross-builds
@@ -9,7 +13,7 @@
 
 ### Dependencies
 
-* cats-2.4.1
+* cats-2.4.2
 * scalacheck-1.15.3
 
 ## v1.0.0-RC2 (2021-01-13)
