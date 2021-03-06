@@ -19,7 +19,7 @@ package object ci {
     }
   }
 
-  // Adapted from scala.StringContext.glob.
+  // Adapted from https://github.com/scala/scala/blob/v2.13.5/src/library/scala/StringContext.scala#L209
   // Originally inspired by https://research.swtch.com/glob
   private def glob(patternChunks: Seq[String], input: CIString): Option[Seq[CIString]] = {
     var patternIndex = 0
