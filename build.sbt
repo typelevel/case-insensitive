@@ -165,8 +165,8 @@ inThisBuild(List(
   githubWorkflowPublish := Seq(
     WorkflowStep.Sbt(List("release")),
     WorkflowStep.Run(List(
-      """eval "$$(ssh-agent -s)"""",
-      """echo "$$SSH_PRIVATE_KEY" | ssh-add -""",
+      """eval "$(ssh-agent -s)"""",
+      """echo "$SSH_PRIVATE_KEY" | ssh-add -""",
       """git config --global user.name "GitHub Actions CI"""",
       """git config --global user.email "ghactions@invalid""""
     )),
