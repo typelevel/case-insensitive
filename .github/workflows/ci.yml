@@ -157,8 +157,8 @@ jobs:
       - run: sbt ++${{ matrix.scala }} release
 
       - run: |
-          eval "$$(ssh-agent -s)"
-          echo "$$SSH_PRIVATE_KEY" | ssh-add -
+          eval "$(ssh-agent -s)"
+          echo "$SSH_PRIVATE_KEY" | ssh-add -
           git config --global user.name "GitHub Actions CI"
           git config --global user.email "ghactions@invalid"
 
