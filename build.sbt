@@ -2,10 +2,9 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 import sbt.ForkOptions
 import sbt.Tests._
 
-val catsV = "2.4.2"
-val disciplineSpecs2V = "1.1.4"
+val catsV = "2.5.0"
 val scalacheckV = "1.15.3"
-val disciplineMunitV = "1.0.6"
+val disciplineMunitV = "1.0.7"
 
 enablePlugins(SonatypeCiReleasePlugin)
 
@@ -136,11 +135,11 @@ inThisBuild(List(
   publishFullName := "Ross A. Baker",
   baseVersion := "0.4",
 
-  crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0-M3", "3.0.0-RC1"),
+  crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0-RC1", "3.0.0-RC2"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
   versionIntroduced := Map(
-    "3.0.0-M3" -> "1.0.0",
-    "3.0.0-RC1" -> "1.0.0"
+    "3.0.0-RC1" -> "1.0.0",
+    "3.0.0-RC2" -> "1.0.1"
   ),
 
   homepage := Some(url("https://github.com/typelevel/case-insensitive")),
