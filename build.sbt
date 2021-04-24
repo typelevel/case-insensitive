@@ -2,9 +2,9 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 import sbt.ForkOptions
 import sbt.Tests._
 
-val catsV = "2.5.0"
+val catsV = "2.6.0"
 val scalacheckV = "1.15.3"
-val disciplineMunitV = "1.0.7"
+val disciplineMunitV = "1.0.8"
 
 enablePlugins(SonatypeCiReleasePlugin)
 
@@ -42,7 +42,7 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform)
     )
   )
   .jsSettings(
-    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.1.2"
+    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.1.3"
   )
   .dependsOn(core)
 
@@ -133,13 +133,14 @@ inThisBuild(List(
   organizationName := "Typelevel",
   publishGithubUser := "rossabaker",
   publishFullName := "Ross A. Baker",
-  baseVersion := "0.4",
+  baseVersion := "1.1",
 
-  crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0-RC1", "3.0.0-RC2"),
+  crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0-RC2", "3.0.0-RC3"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
   versionIntroduced := Map(
     "3.0.0-RC1" -> "1.0.0",
-    "3.0.0-RC2" -> "1.0.1"
+    "3.0.0-RC2" -> "1.0.1",
+    "3.0.0-RC3" -> "1.1.3"
   ),
 
   homepage := Some(url("https://github.com/typelevel/case-insensitive")),
