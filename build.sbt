@@ -3,7 +3,7 @@ import sbt.ForkOptions
 import sbt.Tests._
 
 val catsV = "2.6.0"
-val scalacheckV = "1.15.3"
+val scalacheckV = "1.15.4"
 val disciplineMunitV = "1.0.8"
 
 enablePlugins(SonatypeCiReleasePlugin)
