@@ -2,9 +2,9 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 import sbt.ForkOptions
 import sbt.Tests._
 
-val catsV = "2.6.0"
+val catsV = "2.6.1"
 val scalacheckV = "1.15.4"
-val disciplineMunitV = "1.0.8"
+val disciplineMunitV = "1.0.9"
 
 enablePlugins(SonatypeCiReleasePlugin)
 
@@ -42,7 +42,7 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform)
     )
   )
   .jsSettings(
-    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.1.3"
+    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.2.0"
   )
   .dependsOn(core)
 
@@ -135,7 +135,7 @@ inThisBuild(List(
   publishFullName := "Ross A. Baker",
   baseVersion := "1.1",
 
-  crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0-RC2", "3.0.0-RC3"),
+  crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
   versionIntroduced := Map(
     "3.0.0-RC1" -> "1.0.0",
