@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.12.13, 2.13.5, 3.0.0]
+        scala: [2.12.13, 2.13.6, 3.0.0]
         java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -66,8 +66,8 @@ jobs:
 
       - run: sbt --client '++${{ matrix.scala }}; ci'
 
-      - if: matrix.scala == '2.13.5'
-        run: sbt --client '++${{ matrix.scala }}; ++2.13.5; site/makeMicrosite'
+      - if: matrix.scala == '2.13.6'
+        run: sbt --client '++${{ matrix.scala }}; ++2.13.6; site/makeMicrosite'
 
       - name: Compress target directories
         run: tar cf targets.tar testing/.jvm/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target
@@ -85,7 +85,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.13.5]
+        scala: [2.13.6]
         java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -121,12 +121,12 @@ jobs:
           tar xf targets.tar
           rm targets.tar
 
-      - name: Download target directories (2.13.5)
+      - name: Download target directories (2.13.6)
         uses: actions/download-artifact@v2
         with:
-          name: target-${{ matrix.os }}-2.13.5-${{ matrix.java }}
+          name: target-${{ matrix.os }}-2.13.6-${{ matrix.java }}
 
-      - name: Inflate target directories (2.13.5)
+      - name: Inflate target directories (2.13.6)
         run: |
           tar xf targets.tar
           rm targets.tar
