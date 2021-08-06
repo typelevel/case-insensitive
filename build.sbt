@@ -42,7 +42,7 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform)
     )
   )
   .jsSettings(
-    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.2.0"
+    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.2.1"
   )
   .dependsOn(core)
 
