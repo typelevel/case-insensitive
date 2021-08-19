@@ -28,7 +28,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
       List(CrossType.Pure, CrossType.Full).flatMap(
         _.sharedSrcDir(baseDirectory.value, "main").toList.map(f => file(f.getPath + major))
       )
-    },
+    }
   )
 
 lazy val testing = crossProject(JSPlatform, JVMPlatform)
@@ -55,17 +55,20 @@ lazy val tests = crossProject(JSPlatform, JVMPlatform)
     name := "case-insensitive-tests",
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-laws" % catsV,
-      "org.typelevel" %%% "discipline-munit" % disciplineMunitV,
+      "org.typelevel" %%% "discipline-munit" % disciplineMunitV
     ).map(_ % Test)
   )
   .jvmSettings(
     Test / testGrouping := {
       val (turkish, english) = (Test / definedTests).value.partition(_.name.contains("Turkey"))
       def group(language: String, tests: Seq[TestDefinition]) =
-        new Group(language, tests, SubProcess(ForkOptions().withRunJVMOptions(Vector(s"-Duser.language=${language}"))))
+        new Group(
+          language,
+          tests,
+          SubProcess(ForkOptions().withRunJVMOptions(Vector(s"-Duser.language=$language"))))
       List(
         group("en", english),
-        group("tr", turkish),
+        group("tr", turkish)
       )
     }
   )
@@ -77,17 +80,18 @@ lazy val bench = project
   .enablePlugins(JmhPlugin)
   .settings(commonSettings)
   .settings(
-    name := "case-insensitive-bench",
+    name := "case-insensitive-bench"
   )
   .dependsOn(core.jvm)
 
-lazy val site = project.in(file("site"))
+lazy val site = project
+  .in(file("site"))
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
   .enablePlugins(NoPublishPlugin)
   .settings(commonSettings)
   .dependsOn(core.jvm, testing.jvm)
-  .settings{
+  .settings {
     import microsites._
     Seq(
       micrositeName := "case-insensitive",
@@ -112,10 +116,16 @@ lazy val site = project.in(file("site"))
       ),
       micrositePushSiteWith := GHPagesPlugin,
       micrositeExtraMdFiles := Map(
-          file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "100")),
-          file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "101"))
+        file("CODE_OF_CONDUCT.md") -> ExtraMdFileConfig(
+          "code-of-conduct.md",
+          "page",
+          Map("title" -> "code of conduct", "section" -> "code of conduct", "position" -> "100")),
+        file("LICENSE") -> ExtraMdFileConfig(
+          "license.md",
+          "page",
+          Map("title" -> "license", "section" -> "license", "position" -> "101"))
       ),
-      githubWorkflowArtifactUpload := false,
+      githubWorkflowArtifactUpload := false
     ),
   }
 
@@ -128,53 +138,54 @@ val Scala213 = "2.13.6"
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 // General Settings
-inThisBuild(List(
-  organization := "org.typelevel",
-  organizationName := "Typelevel",
-  publishGithubUser := "rossabaker",
-  publishFullName := "Ross A. Baker",
-  baseVersion := "1.1",
-
-  crossScalaVersions := Seq("2.12.14", Scala213, "3.0.1"),
-  scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
-  versionIntroduced := Map(
-    "3.0.0-RC1" -> "1.0.0",
-    "3.0.0-RC2" -> "1.0.1",
-    "3.0.0-RC3" -> "1.1.3"
-  ),
-
-  homepage := Some(url("https://github.com/typelevel/case-insensitive")),
-  startYear := Some(2020),
-  licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
-  scmInfo := Some(ScmInfo(url("https://github.com/typelevel/case-insensitive"),
-    "git@github.com:typelevel/case-insensitive.git")),
-
-  githubWorkflowTargetTags ++= Seq("v*"),
-  githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
-  githubWorkflowBuildPreamble ++= Seq(
-    WorkflowStep.Use(UseRef.Public("actions", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
-    WorkflowStep.Run(List(
-      "gem install bundler",
-      "bundle install --gemfile=site/Gemfile"
-    ), name = Some("Install Jekyll"))
-  ),
-  githubWorkflowBuild +=
-    WorkflowStep.Sbt(
-      List(s"++${Scala213}", "site/makeMicrosite"),
-      cond = Some(Scala213Cond)),
-  githubWorkflowPublish := Seq(
-    WorkflowStep.Sbt(List("release")),
-    WorkflowStep.Run(List(
-      """eval "$(ssh-agent -s)"""",
-      """echo "$SSH_PRIVATE_KEY" | ssh-add -""",
-      """git config --global user.name "GitHub Actions CI"""",
-      """git config --global user.email "ghactions@invalid""""
-    )),
-    WorkflowStep.Sbt(List("++${Scala213}", "site/publishMicrosite"),
-      name = Some(s"Publish microsite"),
-      env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
-  ),
-
-  testFrameworks += new TestFramework("munit.Framework"),
-  Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) }
-))
+inThisBuild(
+  List(
+    organization := "org.typelevel",
+    organizationName := "Typelevel",
+    publishGithubUser := "rossabaker",
+    publishFullName := "Ross A. Baker",
+    baseVersion := "1.1",
+    crossScalaVersions := Seq("2.12.14", Scala213, "3.0.1"),
+    scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
+    versionIntroduced := Map(
+      "3.0.0-RC1" -> "1.0.0",
+      "3.0.0-RC2" -> "1.0.1",
+      "3.0.0-RC3" -> "1.1.3"
+    ),
+    homepage := Some(url("https://github.com/typelevel/case-insensitive")),
+    startYear := Some(2020),
+    licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/typelevel/case-insensitive"),
+        "git@github.com:typelevel/case-insensitive.git")),
+    githubWorkflowTargetTags ++= Seq("v*"),
+    githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
+    githubWorkflowBuildPreamble ++= Seq(
+      WorkflowStep
+        .Use(UseRef.Public("actions", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
+      WorkflowStep.Run(
+        List(
+          "gem install bundler",
+          "bundle install --gemfile=site/Gemfile"
+        ),
+        name = Some("Install Jekyll"))
+    ),
+    githubWorkflowBuild +=
+      WorkflowStep.Sbt(List(s"++$Scala213", "site/makeMicrosite"), cond = Some(Scala213Cond)),
+    githubWorkflowPublish := Seq(
+      WorkflowStep.Sbt(List("release")),
+      WorkflowStep.Run(List(
+        """eval "$(ssh-agent -s)"""",
+        """echo "$SSH_PRIVATE_KEY" | ssh-add -""",
+        """git config --global user.name "GitHub Actions CI"""",
+        """git config --global user.email "ghactions@invalid""""
+      )),
+      WorkflowStep.Sbt(
+        List("++${Scala213}", "site/publishMicrosite"),
+        name = Some(s"Publish microsite"),
+        env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
+    ),
+    testFrameworks += new TestFramework("munit.Framework"),
+    Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) }
+  ))
