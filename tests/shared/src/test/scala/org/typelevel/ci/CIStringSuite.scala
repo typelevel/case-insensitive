@@ -125,7 +125,7 @@ class CIStringSuite extends DisciplineSuite {
 
   property("ci interpolator is consistent with apply") {
     forAll { (s: String) =>
-      assertEquals(ci"${s}", CIString(s))
+      assertEquals(ci"$s", CIString(s))
     }
   }
 
