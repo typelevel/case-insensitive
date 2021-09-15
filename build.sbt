@@ -145,7 +145,7 @@ inThisBuild(
     publishGithubUser := "rossabaker",
     publishFullName := "Ross A. Baker",
     baseVersion := "1.1",
-    crossScalaVersions := Seq("2.12.14", Scala213, "3.0.1"),
+    crossScalaVersions := Seq("2.12.15", Scala213, "3.0.1"),
     scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
     versionIntroduced := Map(
       "3.0.0-RC1" -> "1.0.0",
