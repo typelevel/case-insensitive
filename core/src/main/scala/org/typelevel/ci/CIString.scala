@@ -70,6 +70,9 @@ final class CIString private (override val toString: String)
   def trim: CIString = transform(_.trim)
 
   def length: Int = toString.length
+
+  @deprecated("Use toString", "0.1.0")
+  def value: String = toString
 }
 
 @suppressUnusedImportWarningForCompat
