@@ -2,7 +2,7 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 import sbt.ForkOptions
 import sbt.Tests._
 
-val catsV = "2.6.1"
+val catsV = "2.7.0"
 val scalacheckV = "1.15.4"
 val disciplineMunitV = "1.0.9"
 
