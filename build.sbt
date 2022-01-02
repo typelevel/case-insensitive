@@ -6,7 +6,7 @@ val catsV = "2.7.0"
 val scalacheckV = "1.15.4"
 val disciplineMunitV = "1.0.9"
 
-enablePlugins(SonatypeCiReleasePlugin)
+enablePlugins(TypelevelCiReleasePlugin)
 
 // Projects
 lazy val `case-insensitive` = project
@@ -17,24 +17,16 @@ lazy val `case-insensitive` = project
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
-  .settings(commonSettings)
   .settings(
     name := "case-insensitive",
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-core" % catsV
-    ),
-    Compile / unmanagedSourceDirectories ++= {
-      val major = if (isDotty.value) "-3" else "-2"
-      List(CrossType.Pure, CrossType.Full).flatMap(
-        _.sharedSrcDir(baseDirectory.value, "main").toList.map(f => file(f.getPath + major))
-      )
-    }
+    )
   )
 
 lazy val testing = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("testing"))
-  .settings(commonSettings)
   .settings(
     name := "case-insensitive-testing",
     libraryDependencies ++= Seq(
@@ -50,7 +42,6 @@ lazy val tests = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Full)
   .in(file("tests"))
   .enablePlugins(NoPublishPlugin)
-  .settings(commonSettings)
   .settings(
     name := "case-insensitive-tests",
     libraryDependencies ++= Seq(
@@ -78,7 +69,6 @@ lazy val bench = project
   .in(file("bench"))
   .enablePlugins(NoPublishPlugin)
   .enablePlugins(JmhPlugin)
-  .settings(commonSettings)
   .settings(
     name := "case-insensitive-bench"
   )
@@ -89,7 +79,6 @@ lazy val site = project
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(MdocPlugin)
   .enablePlugins(NoPublishPlugin)
-  .settings(commonSettings)
   .dependsOn(core.jvm, testing.jvm)
   .settings {
     import microsites._
@@ -129,36 +118,16 @@ lazy val site = project
     ),
   }
 
-// General Settings
-lazy val commonSettings = Seq(
-  headerLicenseStyle := HeaderLicenseStyle.SpdxSyntax
-) ++ automateHeaderSettings(Compile, Test)
-
 val Scala213 = "2.13.7"
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 // General Settings
 inThisBuild(
   List(
-    organization := "org.typelevel",
-    organizationName := "Typelevel",
-    publishGithubUser := "rossabaker",
-    publishFullName := "Ross A. Baker",
-    baseVersion := "1.1",
+    tlBaseVersion := "1.2",
     crossScalaVersions := Seq("2.12.15", Scala213, "3.0.2"),
-    scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last,
-    versionIntroduced := Map(
-      "3.0.0-RC1" -> "1.0.0",
-      "3.0.0-RC2" -> "1.0.1",
-      "3.0.0-RC3" -> "1.1.3"
-    ),
     homepage := Some(url("https://github.com/typelevel/case-insensitive")),
     startYear := Some(2020),
-    licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
-    scmInfo := Some(
-      ScmInfo(
-        url("https://github.com/typelevel/case-insensitive"),
-        "git@github.com:typelevel/case-insensitive.git")),
     githubWorkflowTargetTags ++= Seq("v*"),
     githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
     githubWorkflowBuildPreamble ++= Seq(
