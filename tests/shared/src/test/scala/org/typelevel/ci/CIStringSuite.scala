@@ -32,7 +32,7 @@ class CIStringSuite extends DisciplineSuite {
     }
   }
 
-  property("character based equality") {
+  test("character based equality") {
     assert(CIString("ß") != CIString("SS"))
   }
 
