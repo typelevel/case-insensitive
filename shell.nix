@@ -13,6 +13,7 @@ in pkgs.stdenv.mkDerivation {
   buildInputs = [
     jekyll
     pkgs.git
+    pkgs.nodejs-16_x
     pkgs.sbt
   ];
 }
