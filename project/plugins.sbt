@@ -1,5 +1,5 @@
 addSbtPlugin("com.47deg" % "sbt-microsites" % "1.3.4")
-addSbtPlugin("org.typelevel" % "sbt-typelevel" % "0.4-ac41c6a-SNAPSHOT")
+addSbtPlugin("org.typelevel" % "sbt-typelevel" % "0.4-08387da-SNAPSHOT")
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.6.0")
 addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.2.24")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.6")
