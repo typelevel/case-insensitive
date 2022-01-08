@@ -14,16 +14,18 @@
           inherit system;
           overlays = [ typelevel-nix.overlay ];
         };
-        jekyll = pkgs.writeScriptBin "jekyll" ''
-          ${pkgs.bundler}/bin/bundle && ${pkgs.bundler}/bin/bundle exec jekyll "$@"
-        '';
       in
       {
         devShell = pkgs.devshell.mkShell {
-          imports = [ typelevel-nix.typelevel-shell ];
+          imports = [ typelevel-nix.typelevelShell ];
           name = "my-project-shell";
-          typelevel-shell.jdk.package = pkgs.jdk8;
-          packages = [ jekyll ];
+          typelevelShell = {
+            jdk.package = pkgs.jdk8;
+            sbtMicrosites = {
+              enable = true;
+              siteDir = ./site;
+            };
+          };
         };
       }
     );
