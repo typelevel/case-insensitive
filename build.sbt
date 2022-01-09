@@ -130,7 +130,7 @@ inThisBuild(
   List(
     tlBaseVersion := "1.2",
     crossScalaVersions := Seq("2.12.15", Scala213, "3.0.2"),
-    homepage := Some(url("https://github.com/typelevel/case-insensitive")),
+    homepage := Some(url("https://typelevel.org/case-insensitive")),
     startYear := Some(2020),
     githubWorkflowTargetTags ++= Seq("v*"),
     githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
