@@ -6,7 +6,7 @@ val catsV = "2.7.0"
 val scalacheckV = "1.15.4"
 val disciplineMunitV = "1.0.9"
 
-enablePlugins(TypelevelCiReleasePlugin)
+enablePlugins(TypelevelPlugin)
 
 // Projects
 lazy val `case-insensitive` = project
