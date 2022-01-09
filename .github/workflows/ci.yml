@@ -12,14 +12,12 @@ on:
     branches: ['**']
   push:
     branches: ['**']
-    tags: [v*, v*]
+    tags: [v*]
 
 env:
-  PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
-  SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-  SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-  PGP_SECRET: ${{ secrets.PGP_SECRET }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PGP_SECRET: ${{ secrets.PGP_SECRET }}
+  PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
 
 jobs:
   build:
@@ -71,6 +69,9 @@ jobs:
 
       - if: matrix.scala == '2.13.7'
         run: sbt ++${{ matrix.scala }} ++2.13.7 site/makeMicrosite
+
+      - name: Make target directories
+        run: mkdir -p testing/.jvm/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target
 
       - name: Compress target directories
         run: tar cf targets.tar testing/.jvm/target core/.js/target testing/.js/target core/.jvm/target tests/js/target tests/jvm/target target bench/target project/target
