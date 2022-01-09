@@ -8,6 +8,10 @@ val disciplineMunitV = "1.0.9"
 
 enablePlugins(TypelevelPlugin)
 
+ThisBuild / tlVersionIntroduced := Map(
+  "3" -> "1.1.4"
+)
+
 // Projects
 lazy val `case-insensitive` = project
   .in(file("."))
