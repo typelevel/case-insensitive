@@ -132,8 +132,6 @@ inThisBuild(
     crossScalaVersions := Seq("2.12.15", Scala213, "3.0.2"),
     homepage := Some(url("https://typelevel.org/case-insensitive")),
     startYear := Some(2020),
-    githubWorkflowTargetTags ++= Seq("v*"),
-    githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
     githubWorkflowBuildPreamble ++= Seq(
       WorkflowStep
         .Use(UseRef.Public("actions", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
