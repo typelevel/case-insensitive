@@ -122,7 +122,7 @@ lazy val site = project
     ),
   }
 
-val Scala213 = "2.13.7"
+val Scala213 = "2.13.8"
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 // General Settings
