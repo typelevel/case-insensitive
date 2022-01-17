@@ -142,8 +142,7 @@ inThisBuild(
     ),
     githubWorkflowBuild +=
       WorkflowStep.Sbt(List(s"++$Scala213", "site/makeMicrosite"), cond = Some(Scala213Cond)),
-    githubWorkflowPublish := Seq(
-      WorkflowStep.Sbt(List("tlRelease")),
+    githubWorkflowPublishPostamble ++= Seq(
       WorkflowStep.Run(List(
         """eval "$(ssh-agent -s)"""",
         """echo "$SSH_PRIVATE_KEY" | ssh-add -""",
