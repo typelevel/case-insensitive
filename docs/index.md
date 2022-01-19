@@ -20,7 +20,7 @@ To use case-insensitive in an existing SBT project with Scala 2.12 or a later ve
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "case-insensitive" % "<version>"
+  "org.typelevel" %% "case-insensitive" % "@VERSION@"
 )
 ```
 
