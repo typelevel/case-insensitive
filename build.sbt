@@ -4,6 +4,7 @@ import sbt.Tests._
 
 val catsV = "2.7.0"
 val scalacheckV = "1.15.4"
+val munitV = "0.7.29"
 val disciplineMunitV = "1.0.9"
 
 ThisBuild / tlVersionIntroduced := Map(
@@ -45,6 +46,7 @@ lazy val tests = crossProject(JSPlatform, JVMPlatform)
     name := "case-insensitive-tests",
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-laws" % catsV,
+      "org.scalameta" %%% "munit" % munitV,
       "org.typelevel" %%% "discipline-munit" % disciplineMunitV
     ).map(_ % Test)
   )
