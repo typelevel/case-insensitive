@@ -11,10 +11,7 @@ ThisBuild / tlVersionIntroduced := Map(
 )
 
 // Projects
-lazy val `case-insensitive` = project
-  .in(file("."))
-  .enablePlugins(NoPublishPlugin)
-  .aggregate(core.jvm, core.js, testing.jvm, testing.js, tests.jvm, tests.js, bench)
+lazy val root = tlCrossRootProject.aggregate(core, testing, tests, bench)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
