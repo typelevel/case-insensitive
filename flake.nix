@@ -21,10 +21,6 @@
           name = "my-project-shell";
           typelevelShell = {
             jdk.package = pkgs.jdk8;
-            sbtMicrosites = {
-              enable = true;
-              siteDir = ./site;
-            };
           };
         };
       }
