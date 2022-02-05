@@ -71,9 +71,12 @@ lazy val bench = project
   .enablePlugins(NoPublishPlugin)
   .enablePlugins(JmhPlugin)
   .settings(
-    name := "case-insensitive-bench"
+    name := "case-insensitive-bench",
+    libraryDependencies ++= List(
+      "org.scalacheck" %% "scalacheck" % scalacheckV
+    )
   )
-  .dependsOn(core.jvm)
+  .dependsOn(core.jvm, testing.jvm)
 
 lazy val docs = project
   .in(file("site"))
