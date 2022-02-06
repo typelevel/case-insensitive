@@ -18,8 +18,9 @@ package org.typelevel.ci
 package testing
 
 import java.util.Locale
-import org.scalacheck.{Arbitrary, Cogen, Gen, Shrink}
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.{Arbitrary, Cogen, Gen, Shrink}
+import scala.annotation.nowarn
 import scala.annotation.tailrec
 import scala.collection.immutable.BitSet
 
@@ -94,6 +95,7 @@ object arbitraries {
   implicit val cogenForCaseFoldedString: Cogen[CaseFoldedString] =
     Cogen[String].contramap(_.toString)
 
+  @nowarn("cat=deprecation")
   implicit val shrinkCaseFoldedString: Shrink[CaseFoldedString] = {
     import scala.collection.immutable.Stream
     val stringShrink: Shrink[String] = implicitly[Shrink[String]]

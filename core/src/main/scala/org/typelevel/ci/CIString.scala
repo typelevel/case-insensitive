@@ -63,7 +63,7 @@ final class CIString private (override val toString: String, val asCaseFoldedStr
     asCaseFoldedString.hashCode
 
   override def compare(that: CIString): Int =
-    asCaseFoldedString.compare(that.asCaseFoldedString)
+    Ordering[CaseFoldedString].compare(asCaseFoldedString, that.asCaseFoldedString)
 
   def transform(f: String => String): CIString = CIString(f(toString))
 
