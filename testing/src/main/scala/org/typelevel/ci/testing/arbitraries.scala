@@ -41,9 +41,7 @@ object arbitraries {
     val surrogatePairStrings: Gen[String] =
       // Any Unicode codepoint >= 0x10000 is represented on the JVM by a
       // surrogate pair of two character values.
-      Gen.choose(0x10000, 0x10ffff).map(codePoint =>
-        new String(Array(codePoint), 0, 1)
-      )
+      Gen.choose(0x10000, 0x10ffff).map(codePoint => new String(Array(codePoint), 0, 1))
 
     val titleCaseStrings: Gen[String] = {
       @tailrec
@@ -73,36 +71,9 @@ object arbitraries {
 
   implicit val shrinkForCIString: Shrink[CIString] = {
     val stringShrink: Shrink[String] = implicitly[Shrink[String]]
-    Shrink(
-      x => stringShrink.shrink(x.toString).map(CIString.apply)
-    )
+    Shrink(x => stringShrink.shrink(x.toString).map(CIString.apply))
   }
-
 
   implicit val cogenForOrgTypelevelCiCIString: Cogen[CIString] =
     Cogen[String].contramap(ci => new String(ci.toString.toArray.map(_.toLower)))
-
-  implicit val arbCaseFoldedString: Arbitrary[CaseFoldedString] =
-    Arbitrary(
-      arbitrary[String].flatMap(value =>
-        Gen.oneOf(
-          CaseFoldedString(value),
-          CaseFoldedString(value, true) // Turkic folding rules
-        )
-      )
-    )
-
-  implicit val cogenForCaseFoldedString: Cogen[CaseFoldedString] =
-    Cogen[String].contramap(_.toString)
-
-  @nowarn("cat=deprecation")
-  implicit val shrinkCaseFoldedString: Shrink[CaseFoldedString] = {
-    import scala.collection.immutable.Stream
-    val stringShrink: Shrink[String] = implicitly[Shrink[String]]
-    Shrink(
-      x => stringShrink.shrink(x.toString).flatMap(value =>
-        Stream(CaseFoldedString(value), CaseFoldedString(value, true))
-      )
-    )
-  }
 }

@@ -22,48 +22,30 @@ import java.io.Serializable
 import org.typelevel.ci.compat._
 import scala.math.Ordered
 
-/** A case-insensitive String.
-  *
-  * Comparisions are based on the case folded representation of the `String`
-  * as defined by the Unicode standard. See [[CaseFoldedString]] for a full
-  * discussion on those rules.
-  *
-  * @note This class differs from [[CaseFoldedString]] in that it keeps a
-  *       reference to original input `String` in whatever form it was
-  *       given. This makes [[CIString]] useful if you which to perform case
-  *       insensitive operations on a `String`, but then recover the original,
-  *       unaltered form. If you do not care about the original input form,
-  *       and just want a single case insensitive `String` value, then
-  *       [[CaseFoldedString]] is more efficient and you should consider using
-  *       that directly.
-  *
-  * @param toString
-  *   The original value the CI String was constructed with.
-  */
-final class CIString private (override val toString: String, val asCaseFoldedString: CaseFoldedString)
+@deprecated(
+  message =
+    "Please use either CIStringCF, CIStringCS, or CIStringS instead. CIString/CIStringS implement Unicode default caseless matching on simple case folded strings. For most applications you probably want to use CIStringCF which implements Unicode canonical caseless matching on full case folded strings.",
+  since = "1.3.0")
+final class CIString private (override val toString: String, val asCIStringS: CIStringS)
     extends Ordered[CIString]
     with Serializable {
 
   @deprecated(message = "Please provide a CaseFoldedString directly.", since = "1.3.0")
-  private def this(toString: String) = {
-    this(toString, CaseFoldedString(toString))
-  }
+  private def this(toString: String) =
+    this(toString, CIStringS(toString))
 
   override def equals(that: Any): Boolean =
     that match {
       case that: CIString =>
-        // Note java.lang.String.equalsIgnoreCase _does not_ handle all title
-        // case unicode characters, so we can't use it here. See the tests for
-        // an example.
-        this.asCaseFoldedString == that.asCaseFoldedString
+        this.asCIStringS == that.asCIStringS
       case _ => false
     }
 
   override def hashCode(): Int =
-    asCaseFoldedString.hashCode
+    this.asCIStringS.hashCode
 
   override def compare(that: CIString): Int =
-    Ordering[CaseFoldedString].compare(asCaseFoldedString, that.asCaseFoldedString)
+    Order[CIStringS].compare(asCIStringS, that.asCIStringS)
 
   def transform(f: String => String): CIString = CIString(f(toString))
 
@@ -82,15 +64,17 @@ final class CIString private (override val toString: String, val asCaseFoldedStr
 @suppressUnusedImportWarningForCompat
 object CIString {
 
-  def apply(value: String, useTurkicFolding: Boolean): CIString =
-    new CIString(value, CaseFoldedString(value, useTurkicFolding))
-
+  @deprecated(
+    message =
+      "Please use either CIStringCF, CIStringCS, or CIStringS instead. CIString/CIStringS implement Unicode default caseless matching on simple case folded strings. For most applications you probably want to use CIStringCF which implements Unicode canonical caseless matching on full case folded strings.",
+    since = "1.3.0")
   def apply(value: String): CIString =
-    apply(value, false)
+    new CIString(value, CIStringS(value))
 
-  def fromCaseFoldedString(value: CaseFoldedString): CIString =
-    new CIString(value.toString, value)
-
+  @deprecated(
+    message =
+      "Please use either CIStringCF, CIStringCS, or CIStringS instead. CIString/CIStringS implement Unicode default caseless matching on simple case folded strings. For most applications you probably want to use CIStringCF which implements Unicode canonical caseless matching on full case folded strings.",
+    since = "1.3.0")
   val empty = CIString("")
 
   implicit val catsInstancesForOrgTypelevelCIString: Order[CIString]

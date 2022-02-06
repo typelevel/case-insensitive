@@ -190,7 +190,8 @@ class CIStringSuite extends DisciplineSuite {
   }
 
   // Test name copied from java.lang.Character.getName(), I know it's long...
-  test("GREEK SMALL LETTER ETA WITH DASIA AND OXIA AND YPOGEGRAMMENI should compare equal with upper and loser case invocations"){
+  test(
+    "GREEK SMALL LETTER ETA WITH DASIA AND OXIA AND YPOGEGRAMMENI should compare equal with upper and loser case invocations") {
     val codePoint: Int = 8085 // Unicode codepoint of lower case value
     val lower: String = (new String(Character.toChars(codePoint))).toLowerCase
     val upper: String = lower.toUpperCase
