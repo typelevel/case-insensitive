@@ -43,7 +43,7 @@ object CompatibilitySimpleCaseFoldedString {
     val nfkdNormal1: String =
       Normalizer.normalize(caseFold1, Normalizer.Form.NFKD)
 
-    CompatibilitySimpleCaseFoldedString(nfkdNormal1)
+    new CompatibilitySimpleCaseFoldedString(nfkdNormal1)
   }
 
   val empty: CompatibilitySimpleCaseFoldedString =

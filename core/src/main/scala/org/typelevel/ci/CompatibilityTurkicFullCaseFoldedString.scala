@@ -44,7 +44,7 @@ object CompatibilityTurkicFullCaseFoldedString {
     val nfkdNormal1: String =
       Normalizer.normalize(caseFold1, Normalizer.Form.NFKD)
 
-    CompatibilityTurkicFullCaseFoldedString(nfkdNormal1)
+    new CompatibilityTurkicFullCaseFoldedString(nfkdNormal1)
   }
 
   val empty: CompatibilityTurkicFullCaseFoldedString =

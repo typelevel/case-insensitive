@@ -62,7 +62,7 @@ object CompatibilityFullCaseFoldedString {
     // - Alice's Adventures In Wonderland, Chapter VII, by Lewis Carroll
     //
     // scalafmt:on
-    CompatibilityFullCaseFoldedString(nfkdNormal1)
+    new CompatibilityFullCaseFoldedString(nfkdNormal1)
   }
 
   val empty: CompatibilityFullCaseFoldedString =
