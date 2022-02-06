@@ -128,7 +128,7 @@ object CaseFoldedString {
         x.hashCode
 
       override def compare(x: CaseFoldedString, y: CaseFoldedString): Int =
-        x.compare(y)
+        x.toString.compare(y.toString)
     }
 
   implicit val orderingForCaseFoldedString: Ordering[CaseFoldedString] =
