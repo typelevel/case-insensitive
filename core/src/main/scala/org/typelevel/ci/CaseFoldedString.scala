@@ -27,7 +27,8 @@ import scala.annotation.tailrec
   * scala> val codePoint: Int = 8093
   * val codePoint: Int = 8093
   *
-  * scala> new String(Character.toChars(codePoint))                                                                                        * val res0: String = ᾝ
+  * scala> new String(Character.toChars(codePoint))
+  * val res0: String = ᾝ
   *
   * scala> res0.toUpperCase
   * val res1: String = ἭΙ
