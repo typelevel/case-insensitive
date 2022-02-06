@@ -88,9 +88,9 @@ object CaseFoldedString {
     val builder: java.lang.StringBuilder = new java.lang.StringBuilder(value.length * 3)
     val foldCodePoint: Int => Array[Int] =
       if (turkicFoldingRules) {
-        CaseFolds.turkicFullCaseFoldedCodePoints
+        CaseFolding.turkicFullCaseFoldedCodePoints
       } else {
-        CaseFolds.fullCaseFoldedCodePoints
+        CaseFolding.fullCaseFoldedCodePoints
       }
 
     @tailrec

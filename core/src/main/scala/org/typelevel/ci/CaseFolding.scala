@@ -3,7 +3,7 @@ package org.typelevel.ci
 import java.util.Locale
 import scala.annotation.tailrec
 
-private[ci] object CaseFolds {
+private[ci] object CaseFolding {
 
   def turkicFullCaseFoldedCodePoints(codePoint: Int): Array[Int] =
     codePoint match {
