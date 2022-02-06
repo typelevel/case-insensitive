@@ -22,18 +22,29 @@ import munit.DisciplineSuite
 import org.scalacheck.Prop._
 import org.typelevel.ci.testing.arbitraries._
 import scala.math.signum
+import scala.annotation.tailrec
 
 class CIStringSuite extends DisciplineSuite {
   property("case insensitive equality") {
     forAll { (x: CIString) =>
-      val y = CIString(new String(x.toString.toArray.map(_.toUpper)))
-      val z = CIString(new String(x.toString.toArray.map(_.toLower)))
-      assertEquals(y, z)
+      if (x.toString.contains('\u0131')) {
+        // '\u0131' is LATIN SMALL LETTER DOTLESS I The .toUpper on this
+        // character will yield a 'I', but the Unicode standard for case
+        // folding states \u0131 is only case insensitively equivalent to 'I'
+        // for Turkic languages and by default this mapping should not be
+        // used.
+        val y = CIString(x.toString.toLowerCase())
+        val z = CIString(x.toString.toUpperCase())
+        assertNotEquals(y, z)
+      } else {
+        val y = CIString(x.toString.toLowerCase())
+        val z = CIString(x.toString.toUpperCase())
+        val t = CIString(CIStringSuite.toTitleCase(x.toString))
+        assertEquals(y, z)
+        assertEquals(y, t)
+        assertEquals(t, z)
+      }
     }
-  }
-
-  test("character based equality") {
-    assert(CIString("ß") != CIString("SS"))
   }
 
   property("reflexive equality") {
@@ -178,6 +189,17 @@ class CIStringSuite extends DisciplineSuite {
     })
   }
 
+  // Test name copied from java.lang.Character.getName(), I know it's long...
+  test("GREEK SMALL LETTER ETA WITH DASIA AND OXIA AND YPOGEGRAMMENI should compare equal with upper and loser case invocations"){
+    val codePoint: Int = 8085 // Unicode codepoint of lower case value
+    val lower: String = (new String(Character.toChars(codePoint))).toLowerCase
+    val upper: String = lower.toUpperCase
+    val title: String = lower.map(c => Character.toTitleCase(c)).mkString
+    assertEquals(CIString(lower), CIString(upper))
+    assertEquals(CIString(lower), CIString(title))
+    assertEquals(CIString(title), CIString(upper))
+  }
+
   checkAll("Order[CIString]", OrderTests[CIString].order)
   checkAll("Hash[CIString]", HashTests[CIString].hash)
   checkAll("LowerBounded[CIString]", LowerBoundedTests[CIString].lowerBounded)
@@ -186,4 +208,28 @@ class CIStringSuite extends DisciplineSuite {
   checkAll(
     "CIString instances",
     SerializableTests.serializable(CIString.catsInstancesForOrgTypelevelCIString))
+}
+
+object CIStringSuite {
+  def mapStringByCodepoint(f: Int => Int)(s: String): String = {
+    // Scala's wrapper class doesn't support appendCodePoint, so we need to
+    // explicitly use the java.lang.StringBuilder
+    val builder: java.lang.StringBuilder = new java.lang.StringBuilder(s.length)
+
+    @tailrec
+    def loop(index: Int): String =
+      if (index >= s.length) {
+        builder.toString
+      } else {
+        val codePoint: Int = s.codePointAt(index)
+        builder.appendCodePoint(f(codePoint))
+        val inc: Int = Character.charCount(codePoint)
+        loop(index + inc)
+      }
+
+    loop(0)
+  }
+
+  def toTitleCase(s: String): String =
+    mapStringByCodepoint(Character.toTitleCase)(s)
 }

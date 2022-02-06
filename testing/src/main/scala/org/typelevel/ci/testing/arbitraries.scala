@@ -18,8 +18,11 @@ package org.typelevel.ci
 package testing
 
 import java.util.Locale
-import org.scalacheck.{Arbitrary, Cogen, Gen}
 import org.scalacheck.Arbitrary.arbitrary
+import org.scalacheck.{Arbitrary, Cogen, Gen, Shrink}
+import scala.annotation.nowarn
+import scala.annotation.tailrec
+import scala.collection.immutable.BitSet
 
 object arbitraries {
   implicit val arbitraryForOrgTypelevelCiCIString: Arbitrary[CIString] = {
@@ -34,9 +37,72 @@ object arbitraries {
     val lowers = chars.filter(_.isLower)
     val uppers = chars.filter(_.isUpper)
     val genChar = Gen.oneOf(weirdCharFolds, weirdStringFolds, lowers, uppers, arbitrary[Char])
-    Arbitrary(Gen.listOf(genChar).map(cs => CIString(cs.mkString)))
+
+    val surrogatePairStrings: Gen[String] =
+      // Any Unicode codepoint >= 0x10000 is represented on the JVM by a
+      // surrogate pair of two character values.
+      Gen.choose(0x10000, 0x10ffff).map(codePoint =>
+        new String(Array(codePoint), 0, 1)
+      )
+
+    val titleCaseStrings: Gen[String] = {
+      @tailrec
+      def loop(acc: BitSet, codePoint: Int): BitSet =
+        if (codePoint > 0x10ffff) {
+          acc
+        } else {
+          if (Character.isTitleCase(codePoint)) {
+            loop(acc + codePoint, codePoint + 1)
+          } else {
+            loop(acc, codePoint + 1)
+          }
+        }
+
+      Gen.oneOf(loop(BitSet.empty, 0)).map(codePoint => new String(Array(codePoint), 0, 1))
+    }
+
+    Arbitrary(
+      Gen.oneOf(
+        Gen.listOf(genChar).map(cs => CIString(cs.mkString)),
+        arbitrary[String].map(CIString.apply),
+        surrogatePairStrings.map(CIString.apply),
+        titleCaseStrings.map(CIString.apply)
+      )
+    )
   }
+
+  implicit val shrinkForCIString: Shrink[CIString] = {
+    val stringShrink: Shrink[String] = implicitly[Shrink[String]]
+    Shrink(
+      x => stringShrink.shrink(x.toString).map(CIString.apply)
+    )
+  }
+
 
   implicit val cogenForOrgTypelevelCiCIString: Cogen[CIString] =
     Cogen[String].contramap(ci => new String(ci.toString.toArray.map(_.toLower)))
+
+  implicit val arbCaseFoldedString: Arbitrary[CaseFoldedString] =
+    Arbitrary(
+      arbitrary[String].flatMap(value =>
+        Gen.oneOf(
+          CaseFoldedString(value),
+          CaseFoldedString(value, true) // Turkic folding rules
+        )
+      )
+    )
+
+  implicit val cogenForCaseFoldedString: Cogen[CaseFoldedString] =
+    Cogen[String].contramap(_.toString)
+
+  @nowarn("cat=deprecation")
+  implicit val shrinkCaseFoldedString: Shrink[CaseFoldedString] = {
+    import scala.collection.immutable.Stream
+    val stringShrink: Shrink[String] = implicitly[Shrink[String]]
+    Shrink(
+      x => stringShrink.shrink(x.toString).flatMap(value =>
+        Stream(CaseFoldedString(value), CaseFoldedString(value, true))
+      )
+    )
+  }
 }

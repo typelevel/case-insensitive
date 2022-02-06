@@ -24,52 +24,46 @@ import scala.math.Ordered
 
 /** A case-insensitive String.
   *
-  * Two CI strings are equal if and only if they are the same length, and each corresponding
-  * character is equal after calling either `toUpper` or `toLower`.
+  * Comparisions are based on the case folded representation of the `String`
+  * as defined by the Unicode standard. See [[CaseFoldedString]] for a full
+  * discussion on those rules.
   *
-  * Ordering is based on a string comparison after folding each character to uppercase and then back
-  * to lowercase.
-  *
-  * All comparisons are insensitive to locales.
+  * @note This class differs from [[CaseFoldedString]] in that it keeps a
+  *       reference to original input `String` in whatever form it was
+  *       given. This makes [[CIString]] useful if you which to perform case
+  *       insensitive operations on a `String`, but then recover the original,
+  *       unaltered form. If you do not care about the original input form,
+  *       and just want a single case insensitive `String` value, then
+  *       [[CaseFoldedString]] is more efficient and you should consider using
+  *       that directly.
   *
   * @param toString
   *   The original value the CI String was constructed with.
   */
-final class CIString private (override val toString: String)
+final class CIString private (override val toString: String, val asCaseFoldedString: CaseFoldedString)
     extends Ordered[CIString]
     with Serializable {
+
+  @deprecated(message = "Please provide a CaseFoldedString directly.", since = "1.3.0")
+  private def this(toString: String) = {
+    this(toString, CaseFoldedString(toString))
+  }
+
   override def equals(that: Any): Boolean =
     that match {
       case that: CIString =>
-        this.toString.equalsIgnoreCase(that.toString)
+        // Note java.lang.String.equalsIgnoreCase _does not_ handle all title
+        // case unicode characters, so we can't use it here. See the tests for
+        // an example.
+        this.asCaseFoldedString == that.asCaseFoldedString
       case _ => false
     }
 
-  @transient private[this] var hash = 0
-  override def hashCode(): Int = {
-    if (hash == 0)
-      hash = calculateHash
-    hash
-  }
-
-  private[this] def calculateHash: Int = {
-    var h = 17
-    var i = 0
-    val len = toString.length
-    while (i < len) {
-      // Strings are equal igoring case if either their uppercase or lowercase
-      // forms are equal. Equality of one does not imply the other, so we need
-      // to go in both directions. A character is not guaranteed to make this
-      // round trip, but it doesn't matter as long as all equal characters
-      // hash the same.
-      h = h * 31 + toString.charAt(i).toUpper.toLower
-      i += 1
-    }
-    h
-  }
+  override def hashCode(): Int =
+    asCaseFoldedString.hashCode
 
   override def compare(that: CIString): Int =
-    this.toString.compareToIgnoreCase(that.toString)
+    Ordering[CaseFoldedString].compare(asCaseFoldedString, that.asCaseFoldedString)
 
   def transform(f: String => String): CIString = CIString(f(toString))
 
@@ -87,7 +81,15 @@ final class CIString private (override val toString: String)
 
 @suppressUnusedImportWarningForCompat
 object CIString {
-  def apply(value: String): CIString = new CIString(value)
+
+  def apply(value: String, useTurkicFolding: Boolean): CIString =
+    new CIString(value, CaseFoldedString(value, useTurkicFolding))
+
+  def apply(value: String): CIString =
+    apply(value, false)
+
+  def fromCaseFoldedString(value: CaseFoldedString): CIString =
+    new CIString(value.toString, value)
 
   val empty = CIString("")
 
