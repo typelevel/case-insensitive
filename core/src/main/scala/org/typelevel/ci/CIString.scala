@@ -22,30 +22,68 @@ import java.io.Serializable
 import org.typelevel.ci.compat._
 import scala.math.Ordered
 
-@deprecated(
-  message =
-    "Please use either CIStringCF, CIStringCS, or CIStringS instead. CIString/CIStringS implement Unicode default caseless matching on simple case folded strings. For most applications you probably want to use CIStringCF which implements Unicode canonical caseless matching on full case folded strings.",
-  since = "1.3.0")
-final class CIString private (override val toString: String, val asCIStringS: CIStringS)
+/** A case insensitive representation of a `String`.
+  *
+  * There are several different ways to define a case insensitive match with Unicode. According to
+  * the Unicode standard, this is the "most correct" definition. If you are just looking for a case
+  * insensitive `String`, you should either use this or [[CanonicalFullCaseFoldedString]].
+  *
+  * The only difference is whether or not you want to keep track of the original input `String`
+  * value. If you don't care about that, then [[CanonicalFullCaseFoldedString]] uses less memory and
+  * is likely ''slightly'' faster for most operations.
+  *
+  * {{{
+  * scala> CIString("ß")
+  * val res0: org.typelevel.ci.CIString = ß
+  *
+  * scala> CanonicalFullCaseFoldedString("ß")
+  * val res1: org.typelevel.ci.CanonicalFullCaseFoldedString = ss
+  *
+  * scala> res0.asCanonicalFullCaseFoldedString == res1
+  * val res2: Boolean = true
+  *
+  * scala> res0.toString
+  * val res3: String = ß
+  *
+  * scala> res1.toString
+  * val res4: String = ss
+  *
+  * scala> res0.asCanonicalFullCaseFoldedString.toString
+  * val res5: String = ss
+  * }}}
+  *
+  * @see
+  *   [[https://www.unicode.org/versions/Unicode14.0.0/ch03.pdf#G34145 Unicode Caseless Matching]]
+  */
+final class CIString private (override val toString: String)
     extends Ordered[CIString]
     with Serializable {
 
-  @deprecated(message = "Please provide a CaseFoldedString directly.", since = "1.3.0")
-  private def this(toString: String) =
-    this(toString, CIStringS(toString))
+  /** The [[CanonicalFullCaseFoldedString]] representation of this `String`.
+    *
+    * This is the input `String`, case folded using full Unicode case folding (without the Turkic
+    * rules), and normalized for Unicode canonical caseless matching.
+    *
+    * For any two given Unicode text value, they are considered canonically caseless equivalent to
+    * each other if they both result in this [[CanonicalFullCaseFoldedString]].
+    */
+  lazy val asCanonicalFullCaseFoldedString: CanonicalFullCaseFoldedString =
+    CanonicalFullCaseFoldedString(this.toString)
 
   override def equals(that: Any): Boolean =
     that match {
       case that: CIString =>
-        this.asCIStringS == that.asCIStringS
+        asCanonicalFullCaseFoldedString == that.asCanonicalFullCaseFoldedString
       case _ => false
     }
 
   override def hashCode(): Int =
-    this.asCIStringS.hashCode
+    this.asCanonicalFullCaseFoldedString.hashCode
 
   override def compare(that: CIString): Int =
-    Order[CIStringS].compare(asCIStringS, that.asCIStringS)
+    Order[CanonicalFullCaseFoldedString].compare(
+      asCanonicalFullCaseFoldedString,
+      that.asCanonicalFullCaseFoldedString)
 
   def transform(f: String => String): CIString = CIString(f(toString))
 
@@ -55,7 +93,11 @@ final class CIString private (override val toString: String, val asCIStringS: CI
 
   def trim: CIString = transform(_.trim)
 
-  def length: Int = toString.length
+  @deprecated(
+    message =
+      "Please use asCanonicalFullCaseFoldedString.length or toString.length, depending on your use case, instead. CIString represents a Unicode canonical caseless string with full case folding. Full case folding can change the length (in terms of number of Char values) of a String. This makes length on CIString confusing to use because it is unclear which length this method refers to. As 1.3.0 it is defined to refer to the length of the full case folded representation of the String, since this will be the same for all input Strings.",
+    since = "1.3.0")
+  def length: Int = asCanonicalFullCaseFoldedString.toString.length
 
   @deprecated("Use toString", "0.1.0")
   def value: String = toString
@@ -64,17 +106,9 @@ final class CIString private (override val toString: String, val asCIStringS: CI
 @suppressUnusedImportWarningForCompat
 object CIString {
 
-  @deprecated(
-    message =
-      "Please use either CIStringCF, CIStringCS, or CIStringS instead. CIString/CIStringS implement Unicode default caseless matching on simple case folded strings. For most applications you probably want to use CIStringCF which implements Unicode canonical caseless matching on full case folded strings.",
-    since = "1.3.0")
   def apply(value: String): CIString =
-    new CIString(value, CIStringS(value))
+    new CIString(value)
 
-  @deprecated(
-    message =
-      "Please use either CIStringCF, CIStringCS, or CIStringS instead. CIString/CIStringS implement Unicode default caseless matching on simple case folded strings. For most applications you probably want to use CIStringCF which implements Unicode canonical caseless matching on full case folded strings.",
-    since = "1.3.0")
   val empty = CIString("")
 
   implicit val catsInstancesForOrgTypelevelCIString: Order[CIString]
