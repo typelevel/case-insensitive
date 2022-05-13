@@ -144,6 +144,6 @@ package object ci {
   private def eqCi(a: Char, b: Char) = {
     val a0 = a.toUpper
     val b0 = b.toUpper
-    (a0 == b0) || (a0.toLower == b0.toLower)
+    a0 == b0 || a0.toLower == b0.toLower
   }
 }

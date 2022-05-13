@@ -50,7 +50,7 @@ class CIStringSuite extends DisciplineSuite {
 
   property("transitive equality") {
     forAll { (x: CIString, y: CIString, z: CIString) =>
-      assert((x != y) || (y != z) || (x == z))
+      assert(x != y || y != z || x == z)
     }
   }
 
@@ -72,13 +72,13 @@ class CIStringSuite extends DisciplineSuite {
 
   property("transitive comparison") {
     forAll { (x: CIString, y: CIString, z: CIString) =>
-      assert((x.compare(y) <= 0) || (y.compare(z) <= 0) || (x.compare(z) > 0))
+      assert(x.compare(y) <= 0 || y.compare(z) <= 0 || x.compare(z) > 0)
     }
   }
 
   property("substitutable comparison") {
     forAll { (x: CIString, y: CIString, z: CIString) =>
-      assert((x.compare(y) != 0) || (signum(x.compare(z)) == signum((y.compare(z)))))
+      assert(x.compare(y) != 0 || signum(x.compare(z)) == signum(y.compare(z)))
     }
   }
 
@@ -90,7 +90,7 @@ class CIStringSuite extends DisciplineSuite {
 
   property("hashCode consistent with equality") {
     forAll { (x: CIString, y: CIString) =>
-      assert((x != y) || (x.hashCode == y.hashCode))
+      assert(x != y || x.hashCode == y.hashCode)
     }
   }
   property("toString is inverse of CI.apply") {
