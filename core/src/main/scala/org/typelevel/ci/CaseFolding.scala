@@ -21,6 +21,20 @@ import scala.annotation.tailrec
 /** These are lookup tables for case folding. There are several different case folding algorithms
   * which can be employed with different trade offs.
   *
+  * The definition of case folding from the Unicode specification,
+  *
+  * {{{
+  * Case folding is related to case conversion. However, the main purpose
+  * of case folding is to contribute to caseless matching of strings, whereas
+  * the main purpose of case conversion is to put strings into a particular
+  * cased form.
+  * }}}
+  *
+  * A case folded string is ''not'' a caseless string. The result of case folding a string does not
+  * in and of itself give a string which is ready to be compared for a caseless match. There are
+  * several types of caseless matching and for many of them one more additional transformations are
+  * required.
+  *
   * @note
   *   Some case folding, in particular full case folding, can yield more codePoints than the
   *   original value. That is, it can ''increase'' the size of `String` values once folded.
@@ -44,6 +58,13 @@ private[ci] object CaseFolding {
   //              66: 12263
   // }}}
 
+  /** Perform "full" case folding as defined in the Unicode Case folding tables.
+    *
+    * Full case folded strings can cause the number of code points in the string to change.
+    *
+    * @see
+    *   [[https://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt Unicode Case Folding Tables]]
+    */
   def fullCaseFoldString(value: String): String = {
     val builder: java.lang.StringBuilder = new java.lang.StringBuilder(value.length * 3)
 
@@ -61,6 +82,14 @@ private[ci] object CaseFolding {
     loop(0)
   }
 
+  /** Perform "full" case folding as defined in the Unicode Case folding tables, using the special
+    * rules for Turkic languages.
+    *
+    * Full case folded strings can cause the number of code points in the string to change.
+    *
+    * @see
+    *   [[https://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt Unicode Case Folding Tables]]
+    */
   def turkicFullCaseFoldString(value: String): String = {
     val builder: java.lang.StringBuilder = new java.lang.StringBuilder(value.length * 3)
 
@@ -78,6 +107,19 @@ private[ci] object CaseFolding {
     loop(0)
   }
 
+  /** Perform "simple" case folding as defined in the Unicode Case folding tables.
+    *
+    * Simple case folded strings will have the same number of code points after folding.
+    *
+    * @note
+    *   Use of simple case folding is formally less correct than full case folding. It is intended
+    *   only for circumstances where it a fixed size of the string is required, e.g. you are working
+    *   on a fixed size buffer. If that restriction does not apply full case folding shold be
+    *   preferred.
+    *
+    * @see
+    *   [[https://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt Unicode Case Folding Tables]]
+    */
   def simpleCaseFoldString(value: String): String = {
     val builder: java.lang.StringBuilder = new java.lang.StringBuilder(value.length * 3)
 
@@ -95,6 +137,20 @@ private[ci] object CaseFolding {
     loop(0)
   }
 
+  /** Perform "simple" case folding as defined in the Unicode Case folding tables, using the special
+    * rules for Turkic languages.
+    *
+    * Simple case folded strings will have the same number of code points after folding.
+    *
+    * @note
+    *   Use of simple case folding is formally less correct than full case folding. It is intended
+    *   only for circumstances where it a fixed size of the string is required, e.g. you are working
+    *   on a fixed size buffer. If that restriction does not apply full case folding shold be
+    *   preferred.
+    *
+    * @see
+    *   [[https://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt Unicode Case Folding Tables]]
+    */
   def turkicSimpleCaseFoldString(value: String): String = {
     val builder: java.lang.StringBuilder = new java.lang.StringBuilder(value.length * 3)
 

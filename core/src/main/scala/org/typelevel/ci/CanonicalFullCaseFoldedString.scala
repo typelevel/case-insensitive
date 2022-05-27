@@ -21,16 +21,15 @@ import cats.kernel._
 import cats.syntax.all._
 import java.text.Normalizer
 
-/** A caseless `String`, normalized using Unicode canonical caseless matching
-  * and full case folding. According to the Unicode standard this is the "most
-  * correct" method of caseless matching. If you are looking for a
-  * caseless/case insensitive `String` and have no other requirements, you
-  * should either use this or [[CIString]]. The difference between the two is
-  * that [[CIString]] keeps a reference to the original input `String` (before
-  * normalization and case folding), and this type does not. If you don't need
-  * the original input `String` value, just a caseless version of it, this
-  * type will be more efficient in terms of computation and memory for
-  * ''most'' applications.
+/** A caseless `String`, normalized using Unicode canonical caseless matching and full case folding.
+  * According to the Unicode standard this is the "most correct" method of caseless matching. If you
+  * are looking for a caseless/case insensitive `String` and have no other requirements, you should
+  * either use this or [[CIString]]. The difference between the two is that [[CIString]] keeps a
+  * reference to the original input `String` (before normalization and case folding), and this type
+  * does not. If you don't need the original input `String` value, just a caseless version of it,
+  * this type will be more efficient in terms of computation and memory for ''most'' applications.
+  *
+  * "Full" case folding can change the number of code points in the input string.
   *
   * "Canonical" has a specific meaning in Unicode. From the standard,
   *
@@ -48,17 +47,19 @@ import java.text.Normalizer
   *      NFD(toCasefold(NFD(X))) = NFD(toCasefold(NFD(Y )))
   * }}}
   *
-  * Where "NFD" is the function which performs "Canonical Decomposition" and
-  * "toCasefold" is one, of several, case folding operations. This type uses
-  * full case folding, without the special rules for some Turkic languages.
+  * Where "NFD" is the function which performs "Canonical Decomposition" and "toCasefold" is one, of
+  * several, case folding operations. This type uses full case folding, without the special rules
+  * for some Turkic languages.
   *
-  * Thus, the `String` in this type is the result of applying
-  * `NFD(toCasefold(NFD(X)))` to the input `String`, `X`.
+  * Thus, the `String` in this type is the result of applying `NFD(toCasefold(NFD(X)))` to the input
+  * `String`, `X`.
   *
   * @see
   *   [[https://www.unicode.org/versions/Unicode14.0.0/ch03.pdf#G34145 Unicode Caseless Matching]]
-  * @see [[https://www.unicode.org/reports/tr15/#Canon_Compat_Equivalence Canonical Equivalence]]
-  * @see [[https://www.unicode.org/reports/tr15/#Norm_Forms Unicode Normal Forms]]
+  * @see
+  *   [[https://www.unicode.org/reports/tr15/#Canon_Compat_Equivalence Canonical Equivalence]]
+  * @see
+  *   [[https://www.unicode.org/reports/tr15/#Norm_Forms Unicode Normal Forms]]
   */
 final case class CanonicalFullCaseFoldedString private (override val toString: String)
     extends AnyVal

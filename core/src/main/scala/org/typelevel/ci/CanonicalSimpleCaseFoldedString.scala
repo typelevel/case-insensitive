@@ -22,6 +22,43 @@ import cats.syntax.all._
 import java.text.Normalizer
 import scala.annotation.tailrec
 
+/** A caseless `String`, normalized using Unicode canonical caseless matching and simple case
+  * folding. This differs from [[CanonicalFullCaseFoldedString]] in that it uses "simple" case
+  * folding.
+  *
+  * "Simple" case folding does not change the number of code points in the input string, unlike
+  * "Full" case folding which can.
+  *
+  * "Canonical" has a specific meaning in Unicode. From the standard,
+  *
+  * {{{
+  * Canonical equivalence is a fundamental equivalency between characters
+  * or sequences of characters which represent the same abstract character,
+  * and which when correctly displayed should always have the same visual
+  * appearance and behavior.
+  * }}}
+  *
+  * The definition of canonical caseless equivalence in Unicode is,
+  *
+  * {{{
+  * D145 A string X is a canonical caseless match for a string Y if and only if:
+  *      NFD(toCasefold(NFD(X))) = NFD(toCasefold(NFD(Y )))
+  * }}}
+  *
+  * Where "NFD" is the function which performs "Canonical Decomposition" and "toCasefold" is one, of
+  * several, case folding operations. This type uses simple case folding, without the special rules
+  * for some Turkic languages.
+  *
+  * Thus, the `String` in this type is the result of applying `NFD(toCasefold(NFD(X)))` to the input
+  * `String`, `X`.
+  *
+  * @see
+  *   [[https://www.unicode.org/versions/Unicode14.0.0/ch03.pdf#G34145 Unicode Caseless Matching]]
+  * @see
+  *   [[https://www.unicode.org/reports/tr15/#Canon_Compat_Equivalence Canonical Equivalence]]
+  * @see
+  *   [[https://www.unicode.org/reports/tr15/#Norm_Forms Unicode Normal Forms]]
+  */
 final case class CanonicalSimpleCaseFoldedString private (override val toString: String)
     extends AnyVal
 

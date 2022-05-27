@@ -19,6 +19,12 @@ package org.typelevel.ci
 import java.text.Normalizer
 import scala.annotation.tailrec
 
+/** As [[CanonicalSimpleCaseFoldedString]], except it uses the special rules for certain Turkic
+  * languages during the case folding step.
+  *
+  * @see
+  *   [[https://www.unicode.org/versions/Unicode14.0.0/ch03.pdf#G34145 Unicode Caseless Matching]]
+  */
 final case class CanonicalTurkicSimpleCaseFoldedString private (override val toString: String)
     extends AnyVal
 
