@@ -133,12 +133,15 @@ lazy val bench = project
   .enablePlugins(JmhPlugin)
   .settings(
     name := "case-insensitive-bench",
+    libraryDependencies ++= List(
+      "org.scalacheck" %% "scalacheck" % scalacheckV
+    ),
     console / initialCommands := {
       fullImports(List("cats", "cats.syntax.all", "org.typelevel.ci"), wildcardImport.value)
     },
     consoleQuick / initialCommands := ""
   )
-  .dependsOn(core.jvm)
+  .dependsOn(core.jvm, testing.jvm)
 
 lazy val docs = project
   .in(file("site"))
