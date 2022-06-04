@@ -151,8 +151,8 @@ val Scala213Cond = s"matrix.scala == '$Scala213'"
 // General Settings
 inThisBuild(
   List(
-    tlBaseVersion := "1.2",
-    crossScalaVersions := Seq("2.12.15", Scala213, "3.0.2"),
+    tlBaseVersion := "1.3",
+    crossScalaVersions := Seq("2.12.15", Scala213, "3.1.2"),
     homepage := Some(url("https://typelevel.org/case-insensitive")),
     tlSiteApiUrl := Some(url(
       "https://www.javadoc.io/doc/org.typelevel/case-insensitive_2.13/latest/org/typelevel/ci/index.html")),
