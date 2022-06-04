@@ -78,13 +78,13 @@ class CIStringSuite extends DisciplineSuite {
 
   property("substitutable comparison") {
     forAll { (x: CIString, y: CIString, z: CIString) =>
-      assert((x.compare(y) != 0) || (signum(x.compare(z)) == signum((y.compare(z)))))
+      assert((x.compare(y) != 0) || (signum(x.compare(z)) == signum(y.compare(z))))
     }
   }
 
   property("equality consistent with comparison") {
     forAll { (x: CIString, y: CIString) =>
-      assertEquals((x == y), (x.compare(y) == 0))
+      assertEquals(x == y, x.compare(y) == 0)
     }
   }
 
