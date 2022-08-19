@@ -32,6 +32,23 @@ import scala.math.Ordered
   *
   * All comparisons are insensitive to locales.
   *
+  * Caution: the definition of equality and `.toString` are inconsistent with the property of
+  * substitutability, which states that if `x == y`, then `f(x) == f(y)`. This does not break the
+  * contract of `.equals` nor the laws of `cats.Eq`, but can be surprising:
+  *
+  * {{{
+  * scala> val x = CIString("woof")
+  * val x: org.typelevel.ci.CIString = woof
+  * scala> val y = CIString("WOOF")
+  * val y: org.typelevel.ci.CIString = WOOF
+  * scala> def f(ci: String): CIString = ci.toString
+  * def f(s: String): org.typelevel.ci.CIString
+  * scala> x == y
+  * val res0: Boolean = true
+  * scala> f(x) == f(y)
+  * val res1: Boolean = false
+  * }}}
+  *
   * @param toString
   *   The original value the CI String was constructed with.
   */
