@@ -24,6 +24,11 @@ import org.typelevel.ci.testing.arbitraries._
 import scala.math.signum
 
 class CIStringSuite extends DisciplineSuite {
+  override def scalaCheckTestParameters =
+    if (System.getProperty("java.vm.name") == "Scala Native")
+      super.scalaCheckTestParameters.withMinSuccessfulTests(10)
+    else super.scalaCheckTestParameters
+
   property("case insensitive equality") {
     forAll { (x: CIString) =>
       val y = CIString(new String(x.toString.toArray.map(_.toUpper)))

@@ -4,8 +4,8 @@ import sbt.Tests._
 
 val catsV = "2.8.0"
 val scalacheckV = "1.16.0"
-val munitV = "0.7.29"
-val disciplineMunitV = "1.0.9"
+val munitV = "1.0.0-M6"
+val disciplineMunitV = "2.0.0-M3"
 
 ThisBuild / tlVersionIntroduced := Map(
   "3" -> "1.1.4"
@@ -32,7 +32,7 @@ def fullImports(packages: List[String], wildcard: Char): String =
 // Projects
 lazy val root = tlCrossRootProject.aggregate(core, testing, tests, bench)
 
-lazy val core = crossProject(JSPlatform, JVMPlatform)
+lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
   .settings(
@@ -54,8 +54,11 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
       fullImports(List("cats", "cats.syntax.all"), wildcardImport.value)
     }
   )
+  .nativeSettings(
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap
+  )
 
-lazy val testing = crossProject(JSPlatform, JVMPlatform)
+lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .crossType(CrossType.Pure)
   .in(file("testing"))
   .settings(
@@ -79,12 +82,15 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform)
       fullImports(List("cats", "cats.syntax.all", "org.scalacheck"), wildcardImport.value)
     }
   )
-  .jsSettings(
+  .platformsSettings(JSPlatform, NativePlatform)(
     libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.4.1"
+  )
+  .nativeSettings(
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap
   )
   .dependsOn(core)
 
-lazy val tests = crossProject(JSPlatform, JVMPlatform)
+lazy val tests = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .crossType(CrossType.Full)
   .in(file("tests"))
   .enablePlugins(NoPublishPlugin)
