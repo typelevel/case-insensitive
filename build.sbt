@@ -159,6 +159,9 @@ inThisBuild(
   List(
     tlBaseVersion := "1.3",
     crossScalaVersions := Seq("2.12.16", Scala213, "3.1.3"),
+    developers := List(
+      tlGitHubDev("rossabaker", "Ross A. Baker")
+    ),
     homepage := Some(url("https://typelevel.org/case-insensitive")),
     tlSiteApiUrl := Some(url(
       "https://www.javadoc.io/doc/org.typelevel/case-insensitive_2.13/latest/org/typelevel/ci/index.html")),
