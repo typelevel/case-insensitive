@@ -3,7 +3,7 @@ import sbt.ForkOptions
 import sbt.Tests._
 
 val catsV = "2.8.0"
-val scalacheckV = "1.16.0"
+val scalacheckV = "1.17.0"
 val munitV = "1.0.0-M6"
 val disciplineMunitV = "2.0.0-M3"
 
