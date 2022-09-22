@@ -151,7 +151,7 @@ lazy val docs = project
   .dependsOn(core.jvm, testing.jvm)
   .enablePlugins(TypelevelSitePlugin)
 
-val Scala213 = "2.13.8"
+val Scala213 = "2.13.9"
 val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 // General Settings
