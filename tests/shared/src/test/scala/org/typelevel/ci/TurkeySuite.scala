@@ -19,7 +19,12 @@ package org.typelevel.ci
 import munit.FunSuite
 
 class TurkeySuite extends FunSuite {
-  test("passes the Turkey test") {
+  test("equals passes the Turkey test") {
     assertEquals(CIString("i"), CIString("I"))
+  }
+
+  test("contains passes the Turkey test") {
+    assert(CIString("i").contains(CIString("I")))
+    assert(CIString("I").contains(CIString("i")))
   }
 }
