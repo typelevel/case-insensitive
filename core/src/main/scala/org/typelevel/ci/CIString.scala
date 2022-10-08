@@ -98,6 +98,8 @@ final class CIString private (override val toString: String)
 
   def length: Int = toString.length
 
+  def contains(other: CIString): Boolean = toString.toLowerCase.contains(other.toString.toLowerCase)
+
   @deprecated("Use toString", "0.1.0")
   def value: String = toString
 }

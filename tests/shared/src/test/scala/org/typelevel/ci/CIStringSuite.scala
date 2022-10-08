@@ -183,6 +183,31 @@ class CIStringSuite extends DisciplineSuite {
     })
   }
 
+  test("contains lowercase to lowercase is true if matching") {
+    assert(CIString("hello there").contains(CIString("hello there")))
+    assert(CIString("hello there").contains(CIString("hello")))
+  }
+
+  test("contains lowercase to lowercase is false if not matching") {
+    assertEquals(CIString("hello there").contains(CIString("guten arben")), false)
+  }
+
+  test("contains lowercase to mixed case is false if not matching") {
+    assertEquals(CIString("hello there").contains(CIString("GUTEN ARBEN")), false)
+  }
+
+  test("contains mixed to mixed case is true if matching") {
+    assert(CIString("HELLO there").contains(CIString("hellO ThErE")))
+  }
+
+  test("contains uppercase to mixed case is true if matching") {
+    assert(CIString("HELLO THERE").contains(CIString("hellO ThErE")))
+  }
+
+  test("contains uppercase to mixed case is false if not matching") {
+    assertEquals(CIString("HELLO THERE").contains(CIString("GUTEN arben")), false)
+  }
+
   checkAll("Order[CIString]", OrderTests[CIString].order)
   checkAll("Hash[CIString]", HashTests[CIString].hash)
   checkAll("LowerBounded[CIString]", LowerBoundedTests[CIString].lowerBounded)
