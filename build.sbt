@@ -158,7 +158,7 @@ val Scala213Cond = s"matrix.scala == '$Scala213'"
 inThisBuild(
   List(
     tlBaseVersion := "1.3",
-    crossScalaVersions := Seq("2.12.17", Scala213, "3.1.3"),
+    crossScalaVersions := Seq("2.12.17", Scala213, "3.2.0"),
     developers := List(
       tlGitHubDev("rossabaker", "Ross A. Baker")
     ),
