@@ -152,12 +152,12 @@ lazy val docs = project
   .enablePlugins(TypelevelSitePlugin)
 
 val Scala213 = "2.13.10"
-val Scala213Cond = s"matrix.scala == '$Scala213'"
 
 // General Settings
 inThisBuild(
   List(
     tlBaseVersion := "1.3",
+    scalaVersion := Scala213,
     crossScalaVersions := Seq("2.12.17", Scala213, "3.2.0"),
     developers := List(
       tlGitHubDev("rossabaker", "Ross A. Baker")
