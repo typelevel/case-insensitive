@@ -83,7 +83,7 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     }
   )
   .platformsSettings(JSPlatform, NativePlatform)(
-    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.4.1"
+    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.5.0"
   )
   .nativeSettings(
     tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap
