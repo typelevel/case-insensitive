@@ -98,6 +98,17 @@ final class CIString private (override val toString: String)
 
   def length: Int = toString.length
 
+  def contains(needle: CIString): Boolean = {
+    val needleLength = needle.toString.length
+    val haystack = toString
+    // There's no point searching haystack indexes beyond which the substring is too small to ever match the needle
+    val maxHaystackStartingIndex = haystack.length - needleLength
+
+    (0 to maxHaystackStartingIndex).exists { i =>
+      haystack.regionMatches(true, i, needle.toString, 0, needleLength)
+    }
+  }
+
   @deprecated("Use toString", "0.1.0")
   def value: String = toString
 }
