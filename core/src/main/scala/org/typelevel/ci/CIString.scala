@@ -41,8 +41,8 @@ import scala.math.Ordered
   * val x: org.typelevel.ci.CIString = woof
   * scala> val y = CIString("WOOF")
   * val y: org.typelevel.ci.CIString = WOOF
-  * scala> def f(ci: String): CIString = ci.toString
-  * def f(s: String): org.typelevel.ci.CIString
+  * scala> def f(ci: CIString): String = ci.toString
+  * def f(ci: org.typelevel.ci.CIString): String
   * scala> x == y
   * val res0: Boolean = true
   * scala> f(x) == f(y)
