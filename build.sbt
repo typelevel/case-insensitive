@@ -156,7 +156,7 @@ val Scala213 = "2.13.10"
 // General Settings
 inThisBuild(
   List(
-    tlBaseVersion := "1.3",
+    tlBaseVersion := "1.4",
     scalaVersion := Scala213,
     crossScalaVersions := Seq("2.12.17", Scala213, "3.2.2"),
     developers := List(
