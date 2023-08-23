@@ -173,6 +173,7 @@ class CIStringSuite extends DisciplineSuite {
   test("ci interpolator extracts multiple parts") {
     assert(CIString("Hello, Aretha") match {
       case ci"${greeting}, ${name}" => greeting == ci"Hello" && name == ci"Aretha"
+      case _ => false
     })
   }
 

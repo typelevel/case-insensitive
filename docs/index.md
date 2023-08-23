@@ -96,7 +96,7 @@ assert(CIString("a") < CIString("B"))
 You can also match strings with the `ci` globbing matcher.  It works like `s`:
 
 ```scala mdoc
-val ci"HELLO, ${appellation}" = ci"Hello, Alice"
+val ci"HELLO, ${appellation}" = ci"Hello, Alice": @unchecked
 ```
 
 ## Cats integration

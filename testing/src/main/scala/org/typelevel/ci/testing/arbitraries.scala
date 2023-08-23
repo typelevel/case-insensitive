@@ -33,7 +33,13 @@ object arbitraries {
     // Also focus on characters that are cased at all
     val lowers = chars.filter(_.isLower)
     val uppers = chars.filter(_.isUpper)
-    val genChar = Gen.oneOf(weirdCharFolds, weirdStringFolds, lowers, uppers, arbitrary[Char])
+    val genChar = Gen.oneOf(
+      Gen.oneOf(weirdCharFolds),
+      Gen.oneOf(weirdStringFolds),
+      Gen.oneOf(lowers),
+      Gen.oneOf(uppers),
+      arbitrary[Char]
+    )
     Arbitrary(Gen.listOf(genChar).map(cs => CIString(cs.mkString)))
   }
 
