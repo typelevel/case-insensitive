@@ -4,7 +4,7 @@ import sbt.Tests._
 
 val catsV = "2.9.0"
 val scalacheckV = "1.17.0"
-val munitV = "1.0.0-M7"
+val munitV = "1.0.0-M9"
 val disciplineMunitV = "2.0.0-M3"
 
 ThisBuild / tlVersionIntroduced := Map(
