@@ -2,9 +2,9 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 import sbt.ForkOptions
 import sbt.Tests._
 
-val catsV = "2.9.0"
+val catsV = "2.10.0"
 val scalacheckV = "1.17.0"
-val munitV = "1.0.0-M9"
+val munitV = "1.0.0-M10"
 val disciplineMunitV = "2.0.0-M3"
 
 ThisBuild / tlVersionIntroduced := Map(
@@ -158,7 +158,7 @@ inThisBuild(
   List(
     tlBaseVersion := "1.4",
     scalaVersion := Scala213,
-    crossScalaVersions := Seq("2.12.18", Scala213, "3.3.0"),
+    crossScalaVersions := Seq("2.12.18", Scala213, "3.3.1"),
     developers := List(
       tlGitHubDev("rossabaker", "Ross A. Baker")
     ),
