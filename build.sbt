@@ -3,7 +3,7 @@ import sbt.ForkOptions
 import sbt.Tests._
 
 val catsV = "2.10.0"
-val scalacheckV = "1.17.0"
+val scalacheckV = "1.17.1"
 val munitV = "1.0.0-RC1"
 val disciplineMunitV = "2.0.0-M3"
 
@@ -151,14 +151,14 @@ lazy val docs = project
   .dependsOn(core.jvm, testing.jvm)
   .enablePlugins(TypelevelSitePlugin)
 
-val Scala213 = "2.13.12"
+val Scala213 = "2.13.14"
 
 // General Settings
 inThisBuild(
   List(
     tlBaseVersion := "1.4",
     scalaVersion := Scala213,
-    crossScalaVersions := Seq("2.12.19", Scala213, "3.3.1"),
+    crossScalaVersions := Seq("2.12.19", Scala213, "3.3.3"),
     developers := List(
       tlGitHubDev("rossabaker", "Ross A. Baker")
     ),
