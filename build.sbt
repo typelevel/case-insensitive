@@ -3,6 +3,7 @@ import sbt.ForkOptions
 import sbt.Tests._
 
 val catsV = "2.12.0"
+val scalaJavaLocalesV = "1.5.4"
 val scalacheckV = "1.18.0"
 val munitV = "1.0.0"
 val disciplineMunitV = "2.0.0-M3"
@@ -83,7 +84,7 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     }
   )
   .platformsSettings(JSPlatform, NativePlatform)(
-    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.5.3"
+    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % ScalaJavaLocalesV
   )
   .nativeSettings(
     tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap
