@@ -2,10 +2,11 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 import sbt.ForkOptions
 import sbt.Tests._
 
-val catsV = "2.11.0"
-val scalacheckV = "1.17.1"
+val catsV = "2.12.0"
+val scalaJavaLocalesV = "1.5.4"
+val scalacheckV = "1.18.0"
 val munitV = "1.0.0"
-val disciplineMunitV = "2.0.0-M3"
+val disciplineMunitV = "2.0.0"
 
 ThisBuild / tlVersionIntroduced := Map(
   "3" -> "1.1.4"
@@ -55,7 +56,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     }
   )
   .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap
   )
 
 lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
@@ -83,10 +84,10 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     }
   )
   .platformsSettings(JSPlatform, NativePlatform)(
-    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % "1.5.3"
+    libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % scalaJavaLocalesV
   )
   .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap
   )
   .dependsOn(core)
 
@@ -156,7 +157,7 @@ val Scala213 = "2.13.14"
 // General Settings
 inThisBuild(
   List(
-    tlBaseVersion := "1.4",
+    tlBaseVersion := "1.5",
     scalaVersion := Scala213,
     crossScalaVersions := Seq("2.12.19", Scala213, "3.3.3"),
     developers := List(
