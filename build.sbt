@@ -6,7 +6,7 @@ val catsV = "2.12.0"
 val scalaJavaLocalesV = "1.5.4"
 val scalacheckV = "1.18.0"
 val munitV = "1.0.0"
-val disciplineMunitV = "2.0.0-M3"
+val disciplineMunitV = "2.0.0"
 
 ThisBuild / tlVersionIntroduced := Map(
   "3" -> "1.1.4"
