@@ -56,7 +56,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     }
   )
   .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.4.0").toMap
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap
   )
 
 lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
@@ -87,7 +87,7 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % scalaJavaLocalesV
   )
   .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap
   )
   .dependsOn(core)
 
@@ -157,7 +157,7 @@ val Scala213 = "2.13.14"
 // General Settings
 inThisBuild(
   List(
-    tlBaseVersion := "1.4",
+    tlBaseVersion := "1.5",
     scalaVersion := Scala213,
     crossScalaVersions := Seq("2.12.19", Scala213, "3.3.3"),
     developers := List(
