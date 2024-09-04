@@ -159,7 +159,7 @@ inThisBuild(
   List(
     tlBaseVersion := "1.5",
     scalaVersion := Scala213,
-    crossScalaVersions := Seq("2.12.19", Scala213, "3.3.3"),
+    crossScalaVersions := Seq("2.12.20", Scala213, "3.3.3"),
     developers := List(
       tlGitHubDev("rossabaker", "Ross A. Baker")
     ),
