@@ -165,5 +165,7 @@ inThisBuild(
     homepage := Some(url("https://typelevel.org/case-insensitive")),
     tlSiteApiUrl := Some(url(
       "https://www.javadoc.io/doc/org.typelevel/case-insensitive_2.13/latest/org/typelevel/ci/index.html")),
-    startYear := Some(2020)
+    startYear := Some(2020),
+    // Remove cursed tags
+    tlMimaPreviousVersions ~= { old => old -- Set("1.4.1") }
   ))
