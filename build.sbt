@@ -41,9 +41,8 @@ lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-core" % catsV
     ),
-    console / initialCommands := {
-      fullImports(List("cats", "cats.syntax.all", "org.typelevel.ci"), wildcardImport.value)
-    },
+    console / initialCommands :=
+      fullImports(List("cats", "cats.syntax.all", "org.typelevel.ci"), wildcardImport.value),
     // For some reason consoleQuick delegates to console, which doesn't make
     // sense to me since the only difference is that console compiles the
     // local module, but consoleQuick only has the dependencies. That is,
@@ -51,9 +50,8 @@ lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     // wanted to fiddle with a dependency on the classpath. But the only place
     // to put local module imports has to be console, but since consoleQuick
     // delegates to that, that will break consoleQuick by default. So...
-    consoleQuick / initialCommands := {
+    consoleQuick / initialCommands :=
       fullImports(List("cats", "cats.syntax.all"), wildcardImport.value)
-    }
   )
   .nativeSettings(
     tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap
@@ -67,7 +65,7 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies ++= Seq(
       "org.scalacheck" %%% "scalacheck" % scalacheckV
     ),
-    console / initialCommands := {
+    console / initialCommands :=
       fullImports(
         List(
           "cats",
@@ -77,11 +75,9 @@ lazy val testing = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           "org.typelevel.ci.testing.arbitraries",
           "org.scalacheck"),
         wildcardImport.value
-      )
-    },
-    consoleQuick / initialCommands := {
+      ),
+    consoleQuick / initialCommands :=
       fullImports(List("cats", "cats.syntax.all", "org.scalacheck"), wildcardImport.value)
-    }
   )
   .platformsSettings(JSPlatform, NativePlatform)(
     libraryDependencies += "io.github.cquiroz" %%% "scala-java-locales" % scalaJavaLocalesV
@@ -102,7 +98,7 @@ lazy val tests = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.scalameta" %%% "munit" % munitV,
       "org.typelevel" %%% "discipline-munit" % disciplineMunitV
     ).map(_ % Test),
-    Test / console / initialCommands := {
+    Test / console / initialCommands :=
       fullImports(
         List(
           "cats",
@@ -112,11 +108,9 @@ lazy val tests = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           "org.typelevel.ci.testing.arbitraries",
           "org.scalacheck"),
         wildcardImport.value
-      )
-    },
-    Test / consoleQuick / initialCommands := {
+      ),
+    Test / consoleQuick / initialCommands :=
       fullImports(List("cats", "cats.syntax.all", "org.scalacheck"), wildcardImport.value)
-    }
   )
   .jvmSettings(
     Test / testGrouping := {
@@ -140,9 +134,8 @@ lazy val bench = project
   .enablePlugins(JmhPlugin)
   .settings(
     name := "case-insensitive-bench",
-    console / initialCommands := {
-      fullImports(List("cats", "cats.syntax.all", "org.typelevel.ci"), wildcardImport.value)
-    },
+    console / initialCommands :=
+      fullImports(List("cats", "cats.syntax.all", "org.typelevel.ci"), wildcardImport.value),
     consoleQuick / initialCommands := ""
   )
   .dependsOn(core.jvm)
@@ -168,5 +161,7 @@ inThisBuild(
       "https://www.javadoc.io/doc/org.typelevel/case-insensitive_2.13/latest/org/typelevel/ci/index.html")),
     startYear := Some(2020),
     // Remove cursed tags
-    tlMimaPreviousVersions ~= { old => old -- Set("1.4.1") }
+    tlMimaPreviousVersions ~= { old =>
+      old -- Set("1.4.1")
+    }
   ))
