@@ -16,7 +16,6 @@
 
 package org.typelevel.ci
 
-import cats.implicits._
 import cats.kernel.laws.discipline._
 import munit.DisciplineSuite
 import org.scalacheck.Prop._
