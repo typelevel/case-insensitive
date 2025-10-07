@@ -145,7 +145,7 @@ lazy val docs = project
   .dependsOn(core.jvm, testing.jvm)
   .enablePlugins(TypelevelSitePlugin)
 
-val Scala213 = "2.13.16"
+val Scala213 = "2.13.17"
 
 // General Settings
 inThisBuild(
